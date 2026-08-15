@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+
+<html lang="or">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width,
+        initial-scale=1.0,
+        maximum-scale=1.0,
+        user-scalable=no,
+        viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#fff5f0"
+    >
+
+    <title>Hi Lisa… ♡</title>
+
+
+    <link
+        rel="stylesheet"
+        href="./css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<main
+    class="page question-page"
+>
+
+
+    <header class="top-brand">
+
+        <div class="top-logo">
+
+            <span class="top-logo-heart">
+                ♡
+            </span>
+
+            FOR YOU
+
+        </div>
+
+
+        <div class="progress">
+            02 / ?
+        </div>
+
+    </header>
+
+
+    <section class="question-content">
+
+
+        <div class="question-intro">
+
+            <div class="question-intro-small">
+                ଆଉ ଟିକେ କୁହ.. 👀
+            </div>
+
+
+            <h1 class="question-intro-title">
+                ତମ ବିଷୟରେ କିଛି ❤️
+            </h1>
+
+        </div>
+
+
+        <div class="question-card">
+
+
+            <div class="question-card-heart">
+                ♡
+            </div>
+
+
+            <h2 class="question-text">
+
+                ତୁମକୁ କ'ଣ କରିବାକୁ<br>
+                ପସନ୍ଦ?
+
+            </h2>
+
+
+            <div class="options">
+
+
+                <button class="option">
+
+                    <span class="option-icon">
+                        ♡
+                    </span>
+
+                    ରୋଷେଇ
+
+                </button>
+
+
+                <button class="option">
+
+                    <span class="option-icon">
+                        ♡
+                    </span>
+
+                    ବୁଲିବାକୁ
+
+                </button>
+
+
+                <button class="option">
+
+                    <span class="option-icon">
+                        ♡
+                    </span>
+
+                    ଶୋଇକି 'Reel'
+                    ଦେଖିବାକୁ
+
+                </button>
+
+
+                <button class="option">
+
+                    <span class="option-icon">
+                        ♡
+                    </span>
+
+                    ଆଉ କିଛି
+
+                </button>
+
+
+            </div>
+
+
+            <div class="question-hint">
+
+                ଯାହା ମନ କହୁଛି,
+                ସେଇଟା କୁହ 😌
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+<div
+    id="audioHint"
+    class="audio-hint"
+></div>
+
+
+<audio
+    id="idleAudio"
+    preload="auto"
+>
+
+    <source
+        src="assets/audio/idle-question.mp3"
+        type="audio/mpeg"
+    >
+
+</audio>
+
+
+<script src="./js/spa-nav.js"></script>
+<script src="./js/media.js"></script>
+
+
+<script>
+
+MediaManager.init({
+
+    idleTime:
+        7000,
+
+    audio:
+        "assets/audio/idle-question.mp3",
+
+    hint:
+        "ଏତେ ଭାବୁଛ କଣ ମ? 😌",
+
+    playOnce:
+        true
+
+});
+
+
+const options =
+    document.querySelectorAll(
+        ".option"
+    );
+
+
+/* =========================================================
+   SIMPLE QUESTION
+========================================================= */
+
+options.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            async () => {
+
+                await MediaManager.unlock();
+
+                MediaManager.stop();
+
+
+                options.forEach(
+                    option => {
+
+                        option.disabled =
+                            true;
+
+                    }
+                );
+
+
+                button.classList.add(
+                    "selected"
+                );
+
+
+                createHeartBurst(
+                    button
+                );
+
+
+                setTimeout(
+                    () => {
+
+                        spaNav(4, "page4.html");
+
+                    },
+                    850
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   HEART BURST
+========================================================= */
+
+function createHeartBurst(
+    button
+) {
+
+    const rect =
+        button.getBoundingClientRect();
+
+
+    for (
+        let i = 0;
+        i < 6;
+        i++
+    ) {
+
+        const heart =
+            document.createElement(
+                "span"
+            );
+
+
+        heart.className =
+            "floating-heart";
+
+
+        heart.textContent =
+            "♥";
+
+
+        heart.style.position =
+            "fixed";
+
+
+        heart.style.left =
+            (
+                rect.left +
+                rect.width / 2
+            ) + "px";
+
+
+        heart.style.top =
+            (
+                rect.top +
+                rect.height / 2
+            ) + "px";
+
+
+        heart.style.fontSize =
+            (
+                10 +
+                Math.random() * 7
+            ) + "px";
+
+
+        heart.style.color =
+            "#e94073";
+
+
+        document.body.appendChild(
+            heart
+        );
+
+
+        const x =
+            (
+                Math.random() -
+                .5
+            ) * 90;
+
+
+        const y =
+            -30 -
+            Math.random() * 60;
+
+
+        const animation =
+            heart.animate(
+
+                [
+
+                    {
+                        transform:
+                            "translate(-50%,-50%) scale(.4)",
+
+                        opacity:
+                            0
+
+                    },
+
+                    {
+                        transform:
+                            `translate(
+                                calc(-50% + ${x / 2}px),
+                                calc(-50% + ${y / 2}px)
+                            ) scale(1)`,
+
+                        opacity:
+                            1
+
+                    },
+
+                    {
+                        transform:
+                            `translate(
+                                calc(-50% + ${x}px),
+                                calc(-50% + ${y}px)
+                            ) scale(.7)`,
+
+                        opacity:
+                            0
+
+                    }
+
+                ],
+
+                {
+
+                    duration:
+                        700,
+
+                    easing:
+                        "ease-out"
+
+                }
+
+            );
+
+
+        animation.onfinish =
+            () => {
+
+                heart.remove();
+
+            };
+
+    }
+
+}
+
+/* =========================================================
+   MOBILE PAGE LIFECYCLE SAFETY
+   PAGE 3 ONLY
+========================================================= */
+
+let page3FirstLoad = true;
+
+
+/*
+ * When Page 3 is restored using the mobile browser's
+ * Back/Forward cache, reset only the question state.
+ */
+window.addEventListener("pageshow", function (event) {
+
+    /*
+     * Ignore the very first page load.
+     */
+    if (page3FirstLoad) {
+
+        page3FirstLoad = false;
+
+        return;
+
+    }
+
+
+    /*
+     * Page 3 was restored after Back/Forward.
+     * Reset the question to its initial state.
+     */
+
+
+    /* -----------------------------------------
+       Reset all answer buttons
+    ----------------------------------------- */
+
+    const options =
+        document.querySelectorAll(".option");
+
+    options.forEach(function (option) {
+
+        option.disabled = false;
+
+        option.classList.remove(
+            "selected",
+            "correct",
+            "wrong"
+        );
+
+    });
+
+
+    /* -----------------------------------------
+       Hide error message if Page 3 has one
+    ----------------------------------------- */
+
+    const errorMessage =
+        document.getElementById(
+            "errorMessage"
+        );
+
+    if (errorMessage) {
+
+        errorMessage.classList.remove(
+            "show"
+        );
+
+    }
+
+
+    /* -----------------------------------------
+       Hide success popup if Page 3 has one
+    ----------------------------------------- */
+
+    const successOverlay =
+        document.getElementById(
+            "successOverlay"
+        );
+
+    if (successOverlay) {
+
+        successOverlay.classList.remove(
+            "show"
+        );
+
+    }
+
+
+    /* -----------------------------------------
+       Reset the shared 7-second audio system
+    ----------------------------------------- */
+
+    if (
+        typeof MediaManager !== "undefined"
+    ) {
+
+        MediaManager.resetForNewQuestion();
+
+    }
+
+});
+
+
+/*
+ * When the mobile browser hides Page 3,
+ * stop timers/audio so they cannot remain
+ * active in the background.
+ */
+window.addEventListener("pagehide", function () {
+
+    if (
+        typeof MediaManager !== "undefined"
+    ) {
+
+        MediaManager.stop();
+
+    }
+
+});
+
+
+/*
+ * When the tab/app becomes hidden,
+ * stop audio/timers.
+ */
+document.addEventListener(
+    "visibilitychange",
+    function () {
+
+        if (
+            document.visibilityState ===
+            "hidden"
+        ) {
+
+            if (
+                typeof MediaManager !==
+                "undefined"
+            ) {
+
+                MediaManager.stop();
+
+            }
+
+        }
+
+    }
+);
+</script>
+
+</body>
+
+</html>

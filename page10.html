@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="or">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#06202f">
+<title>ଆମ ଗୀତ ♫</title>
+
+<style>
+
+    :root {
+        --ink: #f0fdff;
+        --muted: rgba(224, 250, 255, 0.62);
+        --accent: #86ecff;
+        --glass-line: rgba(255, 255, 255, 0.32);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: #041823;
+        font-family: "Cormorant Garamond", "Noto Serif Oriya", Georgia, serif;
+        color: var(--ink);
+        user-select: none;
+    }
+
+    .mp {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    /* ===================== BACKGROUND ===================== */
+    .mp-bg {
+        position: absolute;
+        inset: -6%;
+        background: url("./mgimage.png") center 20% / cover no-repeat;
+        transform: scale(1.03);
+        will-change: transform, filter;
+        transition: filter .12s linear;
+    }
+
+    /* light shafts (god rays) */
+    .mp-rays {
+        position: absolute;
+        inset: -30% -10% auto -10%;
+        height: 120%;
+        pointer-events: none;
+        mix-blend-mode: screen;
+        opacity: .5;
+        background:
+            linear-gradient(102deg, transparent 40%, rgba(170,240,255,.16) 46%, transparent 52%),
+            linear-gradient(96deg, transparent 55%, rgba(140,225,255,.12) 60%, transparent 66%),
+            linear-gradient(110deg, transparent 20%, rgba(200,245,255,.10) 26%, transparent 32%);
+        animation: rays 16s ease-in-out infinite alternate;
+    }
+    @keyframes rays {
+        0% { transform: translateX(-4%) rotate(-1deg); }
+        100% { transform: translateX(4%) rotate(1deg); }
+    }
+
+    .mp-caustics {
+        position: absolute;
+        inset: -20%;
+        pointer-events: none;
+        mix-blend-mode: screen;
+        opacity: .35;
+        background:
+            radial-gradient(38% 30% at 30% 18%, rgba(150,240,255,.5), transparent 70%),
+            radial-gradient(32% 26% at 74% 34%, rgba(120,220,255,.42), transparent 70%),
+            radial-gradient(46% 34% at 52% 80%, rgba(90,200,240,.38), transparent 72%);
+        animation: caustics 15s ease-in-out infinite alternate;
+        will-change: transform, opacity;
+    }
+    @keyframes caustics {
+        0% { transform: translate3d(-3%, -2%, 0) scale(1); }
+        50% { transform: translate3d(2%, 3%, 0) scale(1.08); }
+        100% { transform: translate3d(4%, -3%, 0) scale(1.03); }
+    }
+
+    /* teal depth grade + cinematic vignette */
+    .mp-grade {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+            linear-gradient(180deg, rgba(6,34,50,.72) 0%, rgba(4,24,38,.20) 26%, rgba(3,18,32,.30) 62%, rgba(2,14,26,.82) 100%),
+            radial-gradient(130% 92% at 50% 42%, transparent 42%, rgba(2,12,24,.78) 100%);
+    }
+
+    /* fine film grain for a premium texture */
+    .mp-grain {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: .06;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-size: 180px 180px;
+    }
+
+    /* bubbles + light motes */
+    .mp-bubbles, .mp-motes { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .bubble {
+        position: absolute;
+        bottom: -50px;
+        border-radius: 50%;
+        background:
+            radial-gradient(circle at 34% 28%, rgba(255,255,255,.96), rgba(200,238,255,.4) 38%, rgba(155,215,255,.08) 60%, rgba(155,215,255,0) 74%);
+        box-shadow:
+            inset 0 0 9px rgba(255,255,255,.55),
+            inset -2px -3px 7px rgba(70,175,215,.4),
+            0 0 12px rgba(150,225,255,.28);
+        border: 1px solid rgba(255,255,255,.2);
+        opacity: 0;
+        will-change: transform, opacity;
+        pointer-events: auto;   /* tappable — pops into hearts */
+        cursor: pointer;
+    }
+    /* slow, gentle sway upward — easy and satisfying to catch */
+    @keyframes rise {
+        0%   { opacity: 0;  transform: translate(0, 0) scale(.5); }
+        10%  { opacity: .9; }
+        30%  { transform: translate(calc(var(--wob, 0px) *  .6), -28svh) scale(.92); }
+        55%  { transform: translate(calc(var(--wob, 0px) * -.5), -55svh) scale(1); }
+        80%  { opacity: .7; transform: translate(calc(var(--wob, 0px) * .35), -80svh) scale(1.03); }
+        100% { opacity: 0;  transform: translate(0, calc(-100svh - 90px)) scale(1.06); }
+    }
+
+    /* let taps fall through the visuals/text to the bubbles behind them
+       (the control dock stays interactive) */
+    .mp-stage, .mp-head, .mp-meta { pointer-events: none; }
+
+    /* bubble pop → expanding water ring */
+    .pop {
+        position: fixed;
+        z-index: 29;
+        pointer-events: none;
+        border-radius: 50%;
+        border: 2px solid rgba(210,245,255,.9);
+        box-shadow: 0 0 16px rgba(150,235,255,.7), inset 0 0 12px rgba(150,235,255,.4);
+        transform: translate(-50%,-50%) scale(.4);
+        animation: popRing .55s ease-out forwards;
+    }
+    @keyframes popRing {
+        0%   { opacity: .85; transform: translate(-50%,-50%) scale(.4); }
+        100% { opacity: 0;   transform: translate(-50%,-50%) scale(1.7); }
+    }
+
+    /* love hearts released from the popped bubble (size ∝ bubble size) */
+    .love {
+        position: fixed;
+        z-index: 30;
+        pointer-events: none;
+        transform: translate(-50%,-50%);
+        will-change: transform, opacity;
+        filter: drop-shadow(0 2px 7px rgba(255,70,130,.5));
+        animation: loveBurst .95s cubic-bezier(.2,.7,.3,1) forwards;
+    }
+    @keyframes loveBurst {
+        0%   { opacity: 0; transform: translate(-50%,-50%) scale(.3) rotate(0deg); }
+        18%  { opacity: 1; transform: translate(-50%,-50%) scale(1.12) rotate(0deg); }
+        100% { opacity: 0; transform: translate(calc(-50% + var(--dx,0)), calc(-50% + var(--dy,-40px))) scale(.85) rotate(var(--r,0deg)); }
+    }
+    .mote {
+        position: absolute;
+        width: 3px; height: 3px;
+        border-radius: 50%;
+        background: rgba(190,245,255,.9);
+        box-shadow: 0 0 8px rgba(150,235,255,.9);
+        opacity: 0;
+        animation: mote linear infinite;
+    }
+    @keyframes mote {
+        0% { opacity: 0; transform: translateY(0) translateX(0); }
+        15% { opacity: .8; }
+        85% { opacity: .5; }
+        100% { opacity: 0; transform: translateY(-70vh) translateX(var(--mx,10px)); }
+    }
+
+    /* ===================== TOP ===================== */
+    .mp-head {
+        position: relative;
+        z-index: 4;
+        margin-top: max(5.5vh, calc(env(safe-area-inset-top) + 18px));
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        opacity: .85;
+    }
+    .mp-eyebrow {
+        font-family: system-ui, sans-serif;
+        font-size: 10.5px;
+        letter-spacing: .42em;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-shadow: 0 2px 14px rgba(0,20,40,.6);
+    }
+    .eq { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; }
+    .eq i {
+        width: 2px; height: 4px; border-radius: 2px;
+        background: var(--accent);
+        box-shadow: 0 0 6px rgba(134,236,255,.8);
+    }
+    .mp.playing .eq i { animation: eq .9s ease-in-out infinite; }
+    .mp.playing .eq i:nth-child(2){ animation-delay: .18s; }
+    .mp.playing .eq i:nth-child(3){ animation-delay: .36s; }
+    @keyframes eq { 0%,100%{ height:4px; } 50%{ height:12px; } }
+
+    /* ===================== VISUALIZER ORB ===================== */
+    .mp-stage {
+        position: relative;
+        z-index: 3;
+        flex: 1 1 auto;
+        display: grid;
+        place-items: center;
+        width: 100%;
+    }
+    .mp-orb {
+        position: relative;
+        width: min(70vw, 320px);
+        aspect-ratio: 1;
+        display: grid;
+        place-items: center;
+    }
+    .mp-viz { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    /* ===================== META ===================== */
+    .mp-meta {
+        position: relative;
+        z-index: 4;
+        text-align: center;
+        padding: 0 22px;
+        text-shadow: 0 2px 20px rgba(0,18,38,.7);
+    }
+    .mp-track {
+        font-size: clamp(29px, 7.6vw, 42px);
+        font-weight: 600;
+        letter-spacing: .005em;
+        line-height: 1.08;
+        transition: opacity .32s ease, transform .32s ease;
+    }
+    .mp-track.swap { opacity: 0; transform: translateY(6px); }
+    .mp-sub {
+        margin-top: 7px;
+        font-family: system-ui, sans-serif;
+        font-size: 11.5px;
+        letter-spacing: .2em;
+        text-transform: uppercase;
+        color: var(--muted);
+        display: flex; align-items: center; justify-content: center; gap: 9px;
+    }
+    .mp-sub .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--accent); opacity: .8; }
+
+    /* ===================== DOCK ===================== */
+    /* bare control area — no card, just the bar + buttons over the photo */
+    .mp-dock {
+        position: relative;
+        z-index: 4;
+        width: min(84vw, 400px);
+        margin: 3vh 0 max(6vh, calc(env(safe-area-inset-bottom) + 18px));
+    }
+
+    .mp-progress {
+        height: 4px;
+        border-radius: 99px;
+        background: rgba(255,255,255,.22);
+        box-shadow: 0 2px 16px rgba(0,16,30,.5);
+        overflow: hidden;
+    }
+    .mp-progress-fill {
+        height: 100%;
+        width: 0;
+        border-radius: 99px;
+        background: linear-gradient(90deg, #86ecff, #dffaff);
+        box-shadow: 0 0 12px rgba(134,236,255,.85);
+    }
+
+    .mp-controls {
+        margin-top: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(28px, 10vw, 48px);
+    }
+    .drop {
+        position: relative;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--glass-line);
+        border-radius: 50%;
+        color: var(--ink);
+        background: linear-gradient(158deg, rgba(255,255,255,.24), rgba(150,215,240,.05));
+        backdrop-filter: blur(8px) saturate(1.6);
+        -webkit-backdrop-filter: blur(8px) saturate(1.6);
+        box-shadow:
+            inset 0 2px 7px rgba(255,255,255,.55),
+            inset 0 -10px 18px rgba(0,52,76,.38),
+            0 12px 30px rgba(0,22,40,.42);
+        cursor: pointer;
+        overflow: hidden;
+        transition: transform .16s cubic-bezier(.3,1.5,.5,1), box-shadow .2s ease;
+    }
+    .drop::before {
+        content: "";
+        position: absolute;
+        top: 12%; left: 20%;
+        width: 40%; height: 30%;
+        background: radial-gradient(closest-side, rgba(255,255,255,.95), rgba(255,255,255,0));
+        filter: blur(.4px);
+        pointer-events: none;
+    }
+    .drop::after {
+        content: "";
+        position: absolute;
+        left: 50%; top: 50%;
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.5);
+        transform: translate(-50%,-50%) scale(0);
+        opacity: 0;
+        pointer-events: none;
+    }
+    .drop.ripple::after { animation: dropRipple .6s ease-out; }
+    @keyframes dropRipple {
+        0% { opacity: .55; transform: translate(-50%,-50%) scale(0); }
+        100% { opacity: 0; transform: translate(-50%,-50%) scale(15); }
+    }
+    .drop:active { transform: scale(.9); }
+    .drop-side { width: 58px; height: 58px; }
+    .drop-side svg { width: 22px; height: 22px; }
+    .drop-main {
+        width: 88px; height: 88px;
+        background: linear-gradient(158deg, rgba(190,240,255,.4), rgba(80,175,215,.12));
+        box-shadow:
+            inset 0 3px 10px rgba(255,255,255,.7),
+            inset 0 -14px 24px rgba(0,62,92,.5),
+            0 16px 40px rgba(0,28,52,.55);
+    }
+    .drop-main svg { width: 32px; height: 32px; }
+    /* two stacked icons that morph smoothly between play and pause */
+    .drop-main .ic {
+        grid-area: 1 / 1;
+        transition: opacity .26s ease, transform .38s cubic-bezier(.34,1.56,.64,1);
+    }
+    .drop-main .ic-play  { opacity: 1; transform: translateX(2px) scale(1) rotate(0deg); }
+    .drop-main .ic-pause { opacity: 0; transform: scale(.4) rotate(-45deg); }
+    .drop-main.playing .ic-play  { opacity: 0; transform: translateX(2px) scale(.4) rotate(45deg); }
+    .drop-main.playing .ic-pause { opacity: 1; transform: scale(1) rotate(0deg); }
+    .drop-main.playing {
+        box-shadow:
+            inset 0 3px 10px rgba(255,255,255,.7),
+            inset 0 -14px 24px rgba(0,62,92,.5),
+            0 16px 42px rgba(0,28,52,.55),
+            0 0 40px rgba(134,236,255,.55);
+    }
+    .drop svg { fill: var(--ink); filter: drop-shadow(0 1px 3px rgba(0,30,50,.5)); pointer-events: none; }
+
+    @media (max-height: 700px) {
+        .mp-orb { width: min(56vw, 240px); }
+        .mp-track { font-size: clamp(25px, 6.6vw, 34px); }
+        .mp-dock { padding: 13px 18px 16px; }
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="mp" id="mpRoot">
+
+    <div class="mp-bg" id="mpBg"></div>
+    <div class="mp-rays"></div>
+    <div class="mp-caustics" id="mpCaustics"></div>
+    <div class="mp-grade"></div>
+    <div class="mp-grain"></div>
+    <div class="mp-bubbles" id="mpBubbles"></div>
+    <div class="mp-motes" id="mpMotes"></div>
+
+    <div class="mp-head">
+        <span class="eq"><i></i><i></i><i></i></span>
+        <span class="mp-eyebrow">Now Playing</span>
+    </div>
+
+    <div class="mp-stage">
+        <div class="mp-orb" id="mpOrb">
+            <canvas class="mp-viz" id="mpViz"></canvas>
+        </div>
+    </div>
+
+    <div class="mp-meta">
+        <div class="mp-track" id="mpTrack">Track 01</div>
+        <div class="mp-sub">
+            <span id="mpCount">01 / 18</span>
+            <span class="dot"></span>
+            <span>Underwater Sessions</span>
+        </div>
+    </div>
+
+    <div class="mp-dock">
+        <div class="mp-progress"><div class="mp-progress-fill" id="mpProg"></div></div>
+        <div class="mp-controls">
+            <button class="drop drop-side" id="mpPrev" aria-label="Previous track">
+                <svg viewBox="0 0 24 24"><path d="M7 6h2v12H7zM20 6v12L11 12z"/></svg>
+            </button>
+            <button class="drop drop-main" id="mpToggle" aria-label="Play">
+                <svg class="ic ic-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                <svg class="ic ic-pause" viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+            </button>
+            <button class="drop drop-side" id="mpNext" aria-label="Next track">
+                <svg viewBox="0 0 24 24"><path d="M15 6h2v12h-2zM4 6l9 6-9 6z"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <audio id="mpAudio" preload="none" playsinline></audio>
+
+</div>
+
+<script>
+(function () {
+    "use strict";
+
+    const TRACKS = [
+        "song1.mp3","song2.mp3","song3.mp3","song4.mp3","song5.mp3",
+        "song6.mp3","song7.mp3","song8.mp3","song9.mp3","song10.mp3",
+        "song11.mp3","song12.mp3","song14.mp3","song15.mp3","song16.mp3",
+        "song17.mp3","song18.mp3","song19.mp3"
+    ].map(function (f) { return "./assets/audio/" + f; });
+
+    const root   = document.getElementById("mpRoot");
+    const audio  = document.getElementById("mpAudio");
+    const bg     = document.getElementById("mpBg");
+    const caust  = document.getElementById("mpCaustics");
+    const bubbles= document.getElementById("mpBubbles");
+    const motes  = document.getElementById("mpMotes");
+    const canvas = document.getElementById("mpViz");
+    const ctx    = canvas.getContext("2d");
+
+    const elTrack = document.getElementById("mpTrack");
+    const elCount = document.getElementById("mpCount");
+    const elProg  = document.getElementById("mpProg");
+    const btnToggle = document.getElementById("mpToggle");
+    const btnPrev = document.getElementById("mpPrev");
+    const btnNext = document.getElementById("mpNext");
+
+    let index = 0, playing = false, raf = null, idlePhase = 0, punchAnim = null;
+
+    /* ---------- Web Audio ---------- */
+    let actx = null, analyser = null, freq = null, srcNode = null;
+    function ensureGraph() {
+        if (actx) return;
+        try {
+            const AC = window.AudioContext || window.webkitAudioContext;
+            actx = new AC();
+            srcNode = actx.createMediaElementSource(audio);
+            analyser = actx.createAnalyser();
+            analyser.fftSize = 256;
+            analyser.smoothingTimeConstant = 0.84;
+            srcNode.connect(analyser);
+            analyser.connect(actx.destination);
+            freq = new Uint8Array(analyser.frequencyBinCount);
+        } catch (e) { analyser = null; }
+    }
+
+    /* ---------- canvas sizing ---------- */
+    let dpr = 1;
+    function sizeCanvas() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const r = canvas.getBoundingClientRect();
+        canvas.width = Math.round(r.width * dpr);
+        canvas.height = Math.round(r.height * dpr);
+    }
+    window.addEventListener("resize", sizeCanvas);
+
+    /* ---------- helpers ---------- */
+    function two(n){ return (n<10?"0":"")+n; }
+    function fmt(t){ if(!isFinite(t)||t<0)t=0; const m=Math.floor(t/60),s=Math.floor(t%60); return m+":"+(s<10?"0":"")+s; }
+    function labels(){
+        elTrack.classList.add("swap");
+        setTimeout(function(){
+            elTrack.textContent = "Track " + two(index+1);
+            elCount.textContent = two(index+1) + " / " + TRACKS.length;
+            elTrack.classList.remove("swap");
+        }, 180);
+    }
+
+    function load(i, autoplay){
+        index = (i + TRACKS.length) % TRACKS.length;
+        audio.src = TRACKS[index];
+        audio.load();
+        labels();
+        elProg.style.width = "0%";
+        if (autoplay) play();
+    }
+    function play(){
+        ensureGraph();
+        if (actx && actx.state === "suspended") actx.resume();
+        const p = audio.play(); if (p && p.catch) p.catch(function(){});
+    }
+    function pause(){ audio.pause(); }
+
+    function setPlayingUI(on){
+        playing = on;
+        btnToggle.setAttribute("aria-label", on ? "Pause" : "Play");
+        btnToggle.classList.toggle("playing", on);
+        root.classList.toggle("playing", on);
+        if (on) startLoop(); else stopLoop();
+    }
+
+    function ripple(btn){ btn.classList.remove("ripple"); void btn.offsetWidth; btn.classList.add("ripple"); }
+
+    btnToggle.addEventListener("click", function(){ ripple(btnToggle); if(playing) pause(); else play(); });
+    btnPrev.addEventListener("click", function(){ ripple(btnPrev); load(index-1, true); });
+    btnNext.addEventListener("click", function(){ ripple(btnNext); load(index+1, true); });
+
+    audio.addEventListener("play",  function(){ setPlayingUI(true); });
+    audio.addEventListener("pause", function(){ setPlayingUI(false); });
+    audio.addEventListener("ended", function(){ load(index+1, true); });
+    audio.addEventListener("timeupdate", function(){
+        if (audio.duration > 0) elProg.style.width = (audio.currentTime/audio.duration*100) + "%";
+    });
+
+    /* ---------- visual loop ---------- */
+    function draw(){
+        const w = canvas.width, h = canvas.height, cx = w/2, cy = h/2;
+        const baseR = Math.min(w,h) * 0.30;
+        ctx.clearRect(0,0,w,h);
+
+        let level = 0, bass = 0;
+        if (analyser && playing) {
+            analyser.getByteFrequencyData(freq);
+            const n = freq.length; let sum=0, bsum=0, bc=Math.max(1,Math.floor(n*0.14));
+            for (let i=0;i<n;i++) sum+=freq[i];
+            for (let i=0;i<bc;i++) bsum+=freq[i];
+            level=(sum/n)/255; bass=(bsum/bc)/255;
+        } else {
+            idlePhase += 0.028;
+            level = 0.10 + 0.05*(Math.sin(idlePhase)*0.5+0.5);
+            bass = level;
+        }
+
+        /* soft glow RING around the bars — leaves the photo centre clear */
+        const glowOuter = baseR*(1.6 + bass*0.5);
+        const g = ctx.createRadialGradient(cx,cy, baseR*0.95, cx,cy, glowOuter);
+        g.addColorStop(0, "rgba(134,236,255,0)");
+        g.addColorStop(0.5, "rgba(134,236,255,"+(0.10+bass*0.22)+")");
+        g.addColorStop(1, "rgba(134,236,255,0)");
+        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,glowOuter,0,Math.PI*2); ctx.fill();
+
+        /* progress ring (thin, elegant) */
+        const prog = (audio.duration>0)?(audio.currentTime/audio.duration):0;
+        const arcR = baseR*1.66;
+        ctx.lineWidth = 2.5*dpr; ctx.lineCap="round";
+        ctx.strokeStyle="rgba(255,255,255,0.12)";
+        ctx.beginPath(); ctx.arc(cx,cy,arcR,0,Math.PI*2); ctx.stroke();
+        ctx.strokeStyle="rgba(150,240,255,0.9)";
+        ctx.beginPath(); ctx.arc(cx,cy,arcR,-Math.PI/2,-Math.PI/2+prog*Math.PI*2); ctx.stroke();
+
+        /* mirrored frequency bars */
+        const bars = 84;
+        for (let i=0;i<bars;i++){
+            let v;
+            if (analyser && playing) v = freq[Math.floor(i/bars*freq.length*0.7)]/255;
+            else v = 0.10 + 0.055*(Math.sin(idlePhase + i*0.3)*0.5+0.5);
+            v = Math.pow(v, 1.15);
+            const ang = (i/bars)*Math.PI*2 - Math.PI/2;
+            const inner = baseR*1.14;
+            const outer = inner + v*baseR*0.82;
+            const cos=Math.cos(ang), sin=Math.sin(ang);
+            const grd = ctx.createLinearGradient(cx+cos*inner, cy+sin*inner, cx+cos*outer, cy+sin*outer);
+            grd.addColorStop(0,"rgba(120,215,250,"+(0.30+v*0.4)+")");
+            grd.addColorStop(1,"rgba(224,250,255,"+(0.55+v*0.45)+")");
+            ctx.strokeStyle=grd; ctx.lineWidth=2.3*dpr; ctx.lineCap="round";
+            ctx.beginPath();
+            ctx.moveTo(cx+cos*inner, cy+sin*inner);
+            ctx.lineTo(cx+cos*outer, cy+sin*outer);
+            ctx.stroke();
+        }
+
+        /* image reacts to music */
+        bg.style.transform = "scale(" + (1.03 + bass*0.05).toFixed(3) + ")";
+        bg.style.filter = "brightness(" + (1 + level*0.26).toFixed(3) + ") saturate(" + (1.06 + bass*0.2).toFixed(3) + ")";
+        caust.style.opacity = (0.3 + level*0.42).toFixed(3);
+
+        if (bass > 0.64 && Math.random() > 0.5) spawnBubble();
+    }
+    function loop(){ draw(); raf = requestAnimationFrame(loop); }
+    function startLoop(){ if(!raf) loop(); }
+    function stopLoop(){ if(raf){ cancelAnimationFrame(raf); raf=null; } draw(); }
+
+    /* ---------- ambient bubbles + motes ---------- */
+    const HEARTS = ["❤️","💕","💖","💗","♥"];
+
+    function blastBubble(b, ev){
+        if (b._blasted) return;
+        b._blasted = true;
+
+        const rect = b.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const size = rect.width || parseFloat(b.style.width) || 12;
+
+        if (b.parentNode) b.parentNode.removeChild(b);
+
+        /* haptic-style whole-screen punch + real vibration */
+        if (punchAnim) { try { punchAnim.cancel(); } catch (e) {} }
+        try {
+            punchAnim = root.animate(
+                [{ transform: "scale(1)" }, { transform: "scale(1.017)" }, { transform: "scale(1)" }],
+                { duration: 220, easing: "cubic-bezier(.22,1,.36,1)" }
+            );
+        } catch (e) {}
+        if (navigator.vibrate && ev && ev.isTrusted) { try { navigator.vibrate(14); } catch (e) {} }
+
+        /* water pop ring, scaled to the bubble */
+        const pop = document.createElement("div");
+        pop.className = "pop";
+        const ps = size * 2.6;
+        pop.style.left = cx + "px";
+        pop.style.top = cy + "px";
+        pop.style.width = ps + "px";
+        pop.style.height = ps + "px";
+        document.body.appendChild(pop);
+        setTimeout(function(){ if (pop.parentNode) pop.parentNode.removeChild(pop); }, 600);
+
+        /* hearts — lots of them, bigger and wider for bigger bubbles */
+        const count = Math.min(26, Math.max(8, Math.round(size)));
+        for (let i = 0; i < count; i++) {
+            const h = document.createElement("div");
+            h.className = "love";
+            h.textContent = HEARTS[Math.floor(Math.random() * HEARTS.length)];
+            const hs = size * (0.9 + Math.random() * 1.1);
+            const ang = Math.random() * Math.PI * 2;
+            const dist = size * 2 + Math.random() * size * 3;
+            h.style.left = cx + "px";
+            h.style.top = cy + "px";
+            h.style.fontSize = hs + "px";
+            h.style.setProperty("--dx", (Math.cos(ang) * dist).toFixed(1) + "px");
+            h.style.setProperty("--dy", (Math.sin(ang) * dist - dist * 0.35).toFixed(1) + "px");
+            h.style.setProperty("--r", (-45 + Math.random() * 90).toFixed(0) + "deg");
+            document.body.appendChild(h);
+            (function (hh) {
+                setTimeout(function(){ if (hh.parentNode) hh.parentNode.removeChild(hh); }, 1000);
+            })(h);
+        }
+    }
+
+    function spawnBubble(){
+        if (bubbles.childElementCount > 18) return;
+        const b = document.createElement("div");
+        b.className="bubble";
+        const s = 12 + Math.random()*16;
+        b.style.width=s+"px"; b.style.height=s+"px";
+        b.style.left=(Math.random()*100)+"%";
+        b.style.setProperty("--wob", (-40+Math.random()*80)+"px");
+        b.style.animation = "rise " + (10+Math.random()*7) + "s linear forwards";
+        b.addEventListener("pointerdown", function(ev){
+            ev.preventDefault();
+            ev.stopPropagation();
+            blastBubble(b, ev);
+        });
+        bubbles.appendChild(b);
+        b.addEventListener("animationend", function(){ if(b.parentNode) b.parentNode.removeChild(b); });
+    }
+    (function seedMotes(){
+        for (let i=0;i<10;i++){
+            const m=document.createElement("div");
+            m.className="mote";
+            m.style.left=(Math.random()*100)+"%";
+            m.style.bottom=(-10-Math.random()*20)+"%";
+            m.style.setProperty("--mx", (-20+Math.random()*40)+"px");
+            m.style.animationDuration=(9+Math.random()*10)+"s";
+            m.style.animationDelay=(Math.random()*9)+"s";
+            motes.appendChild(m);
+        }
+    })();
+    let bubbleTimer = setInterval(function(){ if(!document.hidden) spawnBubble(); }, 950);
+
+    /* ---------- lifecycle (SPA-safe) ---------- */
+    function halt(){ try{ audio.pause(); }catch(e){} }
+    window.addEventListener("pagehide", function(){
+        halt(); stopLoop(); clearInterval(bubbleTimer);
+        if (actx && actx.suspend){ try{ actx.suspend(); }catch(e){} }
+    });
+    document.addEventListener("visibilitychange", function(){ if(document.hidden) halt(); });
+
+    /* ---------- init ---------- */
+    sizeCanvas();
+    load(0, false);
+    draw();
+
+})();
+</script>
+
+</body>
+
+</html>

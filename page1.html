@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+
+<html lang="or">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width,
+        initial-scale=1.0,
+        maximum-scale=1.0,
+        user-scalable=no,
+        viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#420016"
+    >
+
+    <title>For You ♡</title>
+
+
+    <link
+        rel="stylesheet"
+        href="./css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     PAGE
+========================================================= -->
+
+<main
+    class="page"
+    id="page"
+>
+
+
+    <!-- Background grading -->
+
+    <div
+        class="image-grade"
+    ></div>
+
+
+    <!-- Vignette -->
+
+    <div
+        class="vignette"
+    ></div>
+
+
+    <!-- Water effects -->
+
+    <div
+        class="ripple-layer"
+        id="rippleLayer"
+    ></div>
+
+
+    <!-- =====================================================
+         LOGO
+    ====================================================== -->
+
+    <div
+        class="logo"
+        data-no-ripple
+    >
+
+        <span
+            class="logo-heart"
+        >
+            ♡
+        </span>
+
+        <span>
+            FOR YOU
+        </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN HEART
+    ====================================================== -->
+
+    <button
+        class="heart-button"
+        id="heartButton"
+        aria-label="Love"
+    >
+
+        <span
+            class="heart-symbol"
+        >
+            ♡
+        </span>
+
+    </button>
+
+
+    <!-- =====================================================
+         FLOATING HEARTS
+    ====================================================== -->
+
+    <div
+        class="heart-field"
+        id="heartField"
+    ></div>
+
+
+    <!-- =====================================================
+         WARNING
+    ====================================================== -->
+
+    <div
+        class="too-much"
+        id="tooMuch"
+        aria-live="polite"
+    >
+
+        <span
+            class="warning-heart"
+        >
+            ♥
+        </span>
+
+        <span
+            class="warning-text"
+        >
+            ଅତି ଫୁଲେଇ
+        </span>
+
+        <span
+            class="warning-heart"
+        >
+            ♥
+        </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         HERO CONTENT
+    ====================================================== -->
+
+    <section
+        class="hero-content"
+    >
+
+
+        <div
+            class="eyebrow"
+            data-no-ripple
+        >
+
+            ତୁମ ପାଇଁ… ❤️
+
+        </div>
+
+
+        <h1
+            class="title"
+            data-no-ripple
+        >
+
+            କିଛି କଥା
+
+            <span>
+                ହୃଦୟରୁ…
+            </span>
+
+        </h1>
+
+
+        <!--
+            Shorter version as requested earlier.
+        -->
+
+        <p
+            class="description"
+            data-no-ripple
+        >
+
+            ପ୍ରେମ କେବଳ ଏକ ଶବ୍ଦ ନୁହେଁ…
+
+            ଏହା ସେହି ଅନୁଭବ,
+            ଯେଉଁଠି କାହାର ହସ
+            ଆମ ଦିନକୁ ସୁନ୍ଦର କରିଦିଏ।
+
+        </p>
+
+
+        <p
+            class="flirty"
+            data-no-ripple
+        >
+
+            କିଛି ପ୍ରଶ୍ନ ଅଛି…
+            ସତ କହିବ, ହେଲା? 😉
+
+        </p>
+
+
+        <!-- =================================================
+             START
+        ================================================== -->
+
+        <button
+            class="start-button"
+            id="startButton"
+        >
+
+            <span
+                class="button-content"
+            >
+
+                <span
+                    class="button-heart"
+                >
+                    ♡
+                </span>
+
+                <span>
+                    Let's Go
+                </span>
+
+                <span
+                    class="arrow"
+                >
+                    →
+                </span>
+
+            </span>
+
+        </button>
+
+
+        <div
+            class="micro-copy"
+            data-no-ripple
+        >
+
+            ଏବେଠାରୁ..
+            ପ୍ରତିଟି ମୁହୂର୍ତ୍ତ ମନେ ରଖିବି
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+<script src="./js/spa-nav.js"></script>
+
+
+<script>
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const page =
+    document.getElementById(
+        "page"
+    );
+
+
+const rippleLayer =
+    document.getElementById(
+        "rippleLayer"
+    );
+
+
+const heartButton =
+    document.getElementById(
+        "heartButton"
+    );
+
+
+const heartField =
+    document.getElementById(
+        "heartField"
+    );
+
+
+const tooMuch =
+    document.getElementById(
+        "tooMuch"
+    );
+
+
+const startButton =
+    document.getElementById(
+        "startButton"
+    );
+
+
+/* =========================================================
+   WATER RIPPLE
+========================================================= */
+
+function createWaterRipple(
+    x,
+    y
+) {
+
+    const drop =
+        document.createElement(
+            "div"
+        );
+
+
+    drop.className =
+        "water-drop";
+
+
+    drop.style.left =
+        `${x}px`;
+
+    drop.style.top =
+        `${y}px`;
+
+
+    rippleLayer.appendChild(
+        drop
+    );
+
+
+    createRippleRing(
+        x,
+        y,
+        0
+    );
+
+
+    setTimeout(
+        () => {
+
+            createRippleRing(
+                x,
+                y,
+                90
+            );
+
+        },
+        95
+    );
+
+
+    const lens =
+        document.createElement(
+            "div"
+        );
+
+
+    lens.className =
+        "water-lens";
+
+
+    lens.style.setProperty(
+        "--x",
+        `${x}px`
+    );
+
+
+    lens.style.setProperty(
+        "--y",
+        `${y}px`
+    );
+
+
+    rippleLayer.appendChild(
+        lens
+    );
+
+
+    setTimeout(
+        () => {
+
+            drop.remove();
+
+            lens.remove();
+
+        },
+        950
+    );
+
+}
+
+
+/* =========================================================
+   RIPPLE RING
+========================================================= */
+
+function createRippleRing(
+    x,
+    y,
+    delay
+) {
+
+    const ripple =
+        document.createElement(
+            "div"
+        );
+
+
+    ripple.className =
+        "water-ripple";
+
+
+    ripple.style.setProperty(
+        "--x",
+        `${x}px`
+    );
+
+
+    ripple.style.setProperty(
+        "--y",
+        `${y}px`
+    );
+
+
+    ripple.style.setProperty(
+        "--ripple-duration",
+        `${1.05 + Math.random() * .25}s`
+    );
+
+
+    ripple.style.animationDelay =
+        `${delay}ms`;
+
+
+    rippleLayer.appendChild(
+        ripple
+    );
+
+
+    setTimeout(
+        () => {
+
+            ripple.remove();
+
+        },
+        1500
+    );
+
+}
+
+
+/* =========================================================
+   PROTECTED AREA
+========================================================= */
+
+function isProtectedArea(
+    target
+) {
+
+    return Boolean(
+
+        target.closest(
+            `
+            [data-no-ripple],
+            .logo,
+            .heart-button,
+            .start-button,
+            .floating-heart
+            `
+        )
+
+    );
+
+}
+
+
+/* =========================================================
+   BACKGROUND TOUCH
+========================================================= */
+
+page.addEventListener(
+    "pointerdown",
+    event => {
+
+        if (
+            isProtectedArea(
+                event.target
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        createWaterRipple(
+            event.clientX,
+            event.clientY
+        );
+
+    }
+);
+
+
+/* =========================================================
+   HEART SYSTEM
+========================================================= */
+
+let heartCount =
+    0;
+
+let tapCount =
+    0;
+
+let tapTimer =
+    null;
+
+
+/* =========================================================
+   MAX HEARTS
+========================================================= */
+
+function maximumHearts() {
+
+    const height =
+        window.innerHeight;
+
+
+    return Math.max(
+        30,
+        Math.floor(
+            height / 18
+        )
+    );
+
+}
+
+
+/* =========================================================
+   HEART COLORS
+========================================================= */
+
+const heartColors = [
+
+    "#ffb0bd",
+
+    "#ff7597",
+
+    "#ff547c",
+
+    "#ff9a87",
+
+    "#ffd0c0"
+
+];
+
+
+/* =========================================================
+   CREATE HEART
+========================================================= */
+
+function createHeart() {
+
+    const heart =
+        document.createElement(
+            "div"
+        );
+
+
+    heart.className =
+        "floating-heart";
+
+
+    heart.textContent =
+        Math.random() > .45
+            ? "♡"
+            : "♥";
+
+
+    const size =
+        9 +
+        Math.random() * 11;
+
+
+    const duration =
+        4.5 +
+        Math.random() * 3.2;
+
+
+    const drift =
+        -55 +
+        Math.random() * 110;
+
+
+    const driftMid =
+        -45 +
+        Math.random() * 90;
+
+
+    const driftEnd =
+        -70 +
+        Math.random() * 140;
+
+
+    const opacity =
+        .45 +
+        Math.random() * .45;
+
+
+    const left =
+        Math.random() * 100;
+
+
+    const color =
+        heartColors[
+            Math.floor(
+                Math.random() *
+                heartColors.length
+            )
+        ];
+
+
+    heart.style.setProperty(
+        "--heart-size",
+        `${size}px`
+    );
+
+
+    heart.style.setProperty(
+        "--duration",
+        `${duration}s`
+    );
+
+
+    heart.style.setProperty(
+        "--drift",
+        `${drift}px`
+    );
+
+
+    heart.style.setProperty(
+        "--drift-mid",
+        `${driftMid}px`
+    );
+
+
+    heart.style.setProperty(
+        "--drift-end",
+        `${driftEnd}px`
+    );
+
+
+    heart.style.setProperty(
+        "--opacity",
+        opacity
+    );
+
+
+    heart.style.setProperty(
+        "--left",
+        `${left}%`
+    );
+
+
+    heart.style.setProperty(
+        "--heart-color",
+        color
+    );
+
+
+    heartField.appendChild(
+        heart
+    );
+
+
+    heartCount++;
+
+
+    updateWarning();
+
+
+    /* =====================================================
+       HEART TOUCH
+    ====================================================== */
+
+    heart.addEventListener(
+        "pointerdown",
+        event => {
+
+            event.stopPropagation();
+
+
+            heart.animate(
+
+                [
+
+                    {
+                        transform:
+                            "scale(1)"
+                    },
+
+                    {
+                        transform:
+                            "scale(1.55)"
+                    },
+
+                    {
+                        transform:
+                            "scale(.92)"
+                    },
+
+                    {
+                        transform:
+                            "scale(1)"
+                    }
+
+                ],
+
+                {
+
+                    duration:
+                        300,
+
+                    easing:
+                        "cubic-bezier(.17,.67,.32,1.5)"
+
+                }
+
+            );
+
+
+            heart.style.color =
+                "#ffffff";
+
+
+            heart.style.textShadow =
+                `
+                0 0 12px
+                rgba(255,255,255,.95),
+
+                0 0 30px
+                rgba(255,0,140,.90)
+                `;
+
+
+            setTimeout(
+                () => {
+
+                    if (
+                        heart.parentNode
+                    ) {
+
+                        heart.style.color =
+                            color;
+
+                        heart.style.textShadow =
+                            "";
+
+                    }
+
+                },
+                350
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       REMOVE
+    ====================================================== */
+
+    setTimeout(
+        () => {
+
+            if (
+                heart.parentNode
+            ) {
+
+                heart.remove();
+
+                heartCount--;
+
+                updateWarning();
+
+            }
+
+        },
+        (duration + .5) * 1000
+    );
+
+}
+
+
+/* =========================================================
+   RELEASE HEARTS
+========================================================= */
+
+function releaseHearts(
+    amount
+) {
+
+    const maximum =
+        maximumHearts();
+
+
+    const available =
+        Math.max(
+            0,
+            maximum -
+            heartCount
+        );
+
+
+    const actual =
+        Math.min(
+            amount,
+            available
+        );
+
+
+    for (
+        let i = 0;
+        i < actual;
+        i++
+    ) {
+
+        setTimeout(
+            () => {
+
+                createHeart();
+
+            },
+            i * 48
+        );
+
+    }
+
+
+    updateWarning();
+
+}
+
+
+/* =========================================================
+   WARNING
+========================================================= */
+
+function updateWarning() {
+
+    const maximum =
+        maximumHearts();
+
+
+    if (
+        heartCount >=
+        Math.floor(
+            maximum * .78
+        )
+    ) {
+
+        tooMuch.classList.add(
+            "show"
+        );
+
+    } else {
+
+        tooMuch.classList.remove(
+            "show"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   MAIN HEART
+========================================================= */
+
+heartButton.addEventListener(
+    "pointerdown",
+    event => {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+
+        tapCount++;
+
+
+        /* =================================================
+           FIRST TAP
+        ================================================== */
+
+        if (
+            tapCount === 1
+        ) {
+
+            heartButton.classList.toggle(
+                "liked"
+            );
+
+
+            const symbol =
+                heartButton.querySelector(
+                    ".heart-symbol"
+                );
+
+
+            const liked =
+                heartButton.classList.contains(
+                    "liked"
+                );
+
+
+            symbol.textContent =
+                liked
+                    ? "♥"
+                    : "♡";
+
+        }
+
+
+        /* =================================================
+           SECOND TAP
+        ================================================== */
+
+        else if (
+            tapCount === 2
+        ) {
+
+            releaseHearts(
+                7
+            );
+
+        }
+
+
+        /* =================================================
+           THIRD TAP
+        ================================================== */
+
+        else if (
+            tapCount === 3
+        ) {
+
+            releaseHearts(
+                12
+            );
+
+        }
+
+
+        /* =================================================
+           FOURTH TAP
+        ================================================== */
+
+        else if (
+            tapCount === 4
+        ) {
+
+            releaseHearts(
+                18
+            );
+
+        }
+
+
+        /* =================================================
+           MORE
+        ================================================== */
+
+        else {
+
+            releaseHearts(
+                20 +
+                tapCount * 3
+            );
+
+        }
+
+
+        clearTimeout(
+            tapTimer
+        );
+
+
+        tapTimer =
+            setTimeout(
+                () => {
+
+                    tapCount =
+                        0;
+
+                },
+                850
+            );
+
+    }
+);
+
+
+/* =========================================================
+   START BUTTON
+========================================================= */
+
+startButton.addEventListener(
+    "click",
+    () => {
+
+        page.classList.add(
+            "exit"
+        );
+
+
+        setTimeout(
+            () => {
+
+                spaNav(2, "page2.html");
+
+            },
+            700
+        );
+
+    }
+);
+
+
+/* =========================================================
+   INITIAL HEARTS
+========================================================= */
+
+setTimeout(
+    () => {
+
+        releaseHearts(
+            2
+        );
+
+    },
+    1500
+);
+
+
+/* =========================================================
+   RESIZE
+========================================================= */
+
+/* =========================================================
+   MOBILE BACK / FORWARD FIX
+   PAGE 1 ONLY
+
+   IMPORTANT:
+   This does NOT change the visual design.
+   It only removes the previous page-exit state
+   when Page 1 is restored through Back/Forward.
+========================================================= */
+
+window.addEventListener(
+    "pageshow",
+    function () {
+
+        /*
+         * When returning from Page 2 using the
+         * mobile browser Back button, Page 1 may
+         * be restored from the Back/Forward cache.
+         *
+         * The previous navigation added:
+         *
+         *     page.classList.add("exit");
+         *
+         * which leaves the page at opacity: 0.
+         *
+         * Remove that state immediately.
+         */
+
+        page.classList.remove(
+            "exit"
+        );
+
+
+        /*
+         * Recalculate the heart warning
+         * using the restored viewport.
+         */
+
+        updateWarning();
+
+    }
+);
+
+
+/* =========================================================
+   MOBILE PAGE HIDE SAFETY
+========================================================= */
+
+window.addEventListener(
+    "pagehide",
+    function () {
+
+        /*
+         * Nothing visual is changed here.
+         *
+         * We deliberately DO NOT remove the
+         * "exit" class here because it is required
+         * for the normal Page 1 → Page 2 transition.
+         */
+
+    }
+);
+</script>
+
+
+</body>
+
+</html>

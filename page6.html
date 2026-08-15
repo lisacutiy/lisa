@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="or">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#fff8f5">
+<title>sensitive ❤️</title>
+<link rel="stylesheet" href="./css/style.css">
+<style>
+.page6-step { display:none; }
+.page6-step.active { display:block; }
+.page6-option.selected {
+    transform:translateY(-2px) scale(1.015);
+}
+.page6-option {
+    transition:transform .22s ease, opacity .25s ease, filter .25s ease;
+}
+/* While the teardown runs, the whole card trembles subtly. */
+.page6-destroying {
+    animation: page6Tremor .34s ease-in-out infinite;
+    will-change: transform;
+}
+@keyframes page6Tremor {
+    0%, 100% { transform: translate(0, 0) rotate(0); }
+    25% { transform: translate(-1px, .6px) rotate(-.12deg); }
+    75% { transform: translate(1px, -.6px) rotate(.12deg); }
+}
+
+/* Each element: quick electric glitch + desaturate, then blur, shrink
+   and spin away along its own random vector. */
+.p6-destroy {
+    animation: page6Vanish .82s cubic-bezier(.36,.07,.19,.97) forwards !important;
+    pointer-events: none;
+    will-change: transform, opacity, filter;
+}
+@keyframes page6Vanish {
+    0%   { opacity: 1; filter: none; transform: translate(0,0) scale(1) rotate(0); }
+    14%  { transform: translate(-3px,1px) scale(1.06); filter: brightness(2) saturate(0) contrast(1.5); }
+    28%  { transform: translate(3px,-2px) scale(1.03); filter: brightness(1.4) saturate(0); }
+    100% { opacity: 0; filter: blur(10px) brightness(2.2);
+           transform: translate(var(--fx,0), var(--fy,-28px)) scale(.16) rotate(var(--fr,28deg)); }
+}
+
+/* Glowing debris sparks flung out from each destroyed element. */
+.p6-particle {
+    position: fixed;
+    z-index: 99998;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    background: radial-gradient(circle at 35% 30%, #fff 0%, #ff5a8a 55%, rgba(255,90,138,0) 78%);
+    box-shadow: 0 0 9px rgba(255,120,160,.85);
+    animation: page6Debris .95s ease-out forwards;
+}
+@keyframes page6Debris {
+    0%   { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+    70%  { opacity: .85; }
+    100% { opacity: 0;
+           transform: translate(calc(-50% + var(--px,0)), calc(-50% + var(--py,0))) scale(.15); }
+}
+.page6-blast {
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    pointer-events:none;
+    opacity:0;
+    background:radial-gradient(circle at center, rgba(255,255,255,.96), rgba(255,255,255,0) 62%);
+    transition:opacity .5s ease;
+}
+.page6-blast.show { opacity:1; }
+</style>
+</head>
+
+<body>
+<main class="page question-page" id="page6">
+
+<header class="top-brand">
+    <div class="top-logo">
+        <span class="top-logo-heart">♡</span>
+        FOR YOU
+    </div>
+    <div class="progress">06 / ?</div>
+</header>
+
+<section class="question-content">
+
+    <div class="question-intro">
+        <div class="question-intro-small">ଗୋଟେ Secretକଥା 🤫❤️ </div>
+        <h1 class="question-intro-title">ସତ କହିବାକୁ ପଡ଼ିବ ❤️</h1>
+    </div>
+
+    <div class="question-card" id="page6Card">
+
+        <div class="question-card-heart">♡</div>
+
+        <div class="page6-step active">
+
+            <div class="page9-number"> </div>
+
+            <h2 class="question-text">
+                ତମର କିଏ BF / Bestie (Boy) ଅଛନ୍ତି କି? 😏
+            </h2>
+
+            <div class="options">
+
+                <button type="button" class="option page6-option" data-answer="yes">
+                    <span class="option-icon">❤️</span>
+                    Yes
+                </button>
+
+                <button type="button" class="option page6-option" data-answer="no">
+                    <span class="option-icon">🙈</span>
+                    No
+                </button>
+
+                <button type="button" class="option page6-option" data-answer="kahibini">
+                    <span class="option-icon">🤐</span>
+                    କହିବିନି
+                </button>
+
+            </div>
+
+            <div class="question-hint">
+                କୁହ, ମୁଁ କାହାକୁ କହିବିନି 🤫
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+</main>
+
+<div class="page6-blast" id="page6Blast"></div>
+
+<audio id="page6YesAudio" preload="auto" playsinline>
+    <source src="./assets/audio/boyfriend-yes.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="page6KahibiniAudio" preload="auto" playsinline>
+    <source src="./assets/audio/kahibini.mp3" type="audio/mpeg">
+</audio>
+
+<script src="./lifecycle.js"></script>
+<script src="./js/spa-nav.js"></script>
+<script src="./js/media.js"></script>
+
+<script>
+(function () {
+    "use strict";
+
+    let destroyed = false;
+    let timers = [];
+
+    const card = document.getElementById("page6Card");
+    const blast = document.getElementById("page6Blast");
+    const yesAudio = document.getElementById("page6YesAudio");
+    const kahibiniAudio = document.getElementById("page6KahibiniAudio");
+    const options = Array.from(document.querySelectorAll(".page6-option"));
+
+    function addTimer(callback, delay) {
+        const id = PageLifecycle.timeout(function () {
+            timers = timers.filter(function (item) {
+                return item !== id;
+            });
+            callback();
+        }, delay);
+
+        timers.push(id);
+        return id;
+    }
+
+    function clearTimers() {
+        timers.forEach(function (id) {
+            PageLifecycle.clear(id);
+        });
+        timers = [];
+    }
+
+    function stopPage6Audio() {
+        [yesAudio, kahibiniAudio].forEach(function (audio) {
+            if (!audio) return;
+            try {
+                audio.pause();
+                audio.currentTime = 0;
+            } catch (error) {}
+        });
+    }
+
+    function playAudioNonBlocking(audio) {
+        if (!audio) return;
+
+        try {
+            audio.currentTime = 0;
+            const p = audio.play();
+            if (p && typeof p.catch === "function") {
+                p.catch(function () {});
+            }
+        } catch (error) {}
+    }
+
+    /*
+     * IMPORTANT:
+     * Navigation to Page 7 never waits for audio, promises, or media events.
+     * This removes the mobile autoplay/promise stall that could leave Page 6
+     * appearing frozen.
+     */
+    function goToPage7() {
+        if (destroyed) return;
+
+        destroyed = true;
+        clearTimers();
+        MediaManager.stop();
+
+        spaNav(7, "./page7.html");
+    }
+
+    let ended = false;
+
+    function endToIndex() {
+        /*
+         * NOTE: do NOT gate this on `destroyed`. The "Yes" path
+         * (aggressiveDestroyThenEnd) sets destroyed = true before scheduling
+         * this call, so an `if (destroyed) return` here would abort the
+         * redirect entirely — the buttons would vanish but the page would
+         * hang forever. Use a dedicated one-shot flag instead.
+         */
+        if (ended) return;
+        ended = true;
+
+        destroyed = true;
+        clearTimers();
+        stopPage6Audio();
+        MediaManager.stop();
+
+        spaNav(1, "./index.html");
+    }
+
+    function spawnDebris(rect) {
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const count = 7 + Math.floor(Math.random() * 6);
+
+        for (let i = 0; i < count; i++) {
+            const p = document.createElement("div");
+            p.className = "p6-particle";
+
+            const angle = Math.random() * Math.PI * 2;
+            const dist = 28 + Math.random() * 80;
+            const size = 4 + Math.random() * 7;
+
+            p.style.left = cx + "px";
+            p.style.top = cy + "px";
+            p.style.width = size + "px";
+            p.style.height = size + "px";
+            p.style.setProperty("--px", (Math.cos(angle) * dist).toFixed(1) + "px");
+            p.style.setProperty("--py", (Math.sin(angle) * dist).toFixed(1) + "px");
+
+            document.body.appendChild(p);
+
+            window.setTimeout(function () {
+                if (p.parentNode) p.parentNode.removeChild(p);
+            }, 1000);
+        }
+    }
+
+    function destroyElement(node) {
+        if (!node || node.classList.contains("p6-destroy")) return;
+
+        /* Capture position BEFORE the collapse so debris spawns on target. */
+        const rect = node.getBoundingClientRect();
+
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 45 + Math.random() * 95;
+
+        node.style.setProperty("--fx", (Math.cos(angle) * dist).toFixed(1) + "px");
+        node.style.setProperty("--fy", (Math.sin(angle) * dist - 25).toFixed(1) + "px");
+        node.style.setProperty("--fr", (-45 + Math.random() * 90).toFixed(1) + "deg");
+
+        node.classList.add("p6-destroy");
+        spawnDebris(rect);
+    }
+
+    function aggressiveDestroyThenEnd() {
+        if (destroyed) return;
+
+        destroyed = true;
+        clearTimers();
+        MediaManager.stop();
+
+        playAudioNonBlocking(yesAudio);
+
+        card.classList.add("page6-destroying");
+
+        /*
+         * Staged disintegration: tear the screen apart one element at a
+         * time, spread across the full audio so the whole ~17s reads as a
+         * deliberate teardown — not an instant snap.
+         */
+        const doomed = [];
+        function queue(node) { if (node) doomed.push(node); }
+
+        queue(document.querySelector(".top-brand .progress"));
+        queue(document.querySelector(".top-brand .top-logo"));
+        queue(document.querySelector(".question-intro-small"));
+        queue(document.querySelector(".question-intro-title"));
+        queue(document.querySelector("#page6Card .question-card-heart"));
+        queue(document.querySelector("#page6Card .page9-number"));
+        queue(document.querySelector("#page6Card .question-text"));
+        options.forEach(function (button) { queue(button); });
+        queue(document.querySelector("#page6Card .question-hint"));
+        queue(card); /* the card shell collapses last */
+
+        const durationMs =
+            (yesAudio && isFinite(yesAudio.duration) && yesAudio.duration > 0)
+                ? Math.ceil(yesAudio.duration * 1000)
+                : 17000;
+
+        /* Reserve a beat at the end for the final flash before redirect. */
+        const tail = 1600;
+        const budget = Math.max(3000, durationMs - tail);
+        const step = budget / doomed.length;
+
+        doomed.forEach(function (node, i) {
+            addTimer(function () {
+                destroyElement(node);
+            }, Math.round(i * step) + 300);
+        });
+
+        /* Final white flash right before we return to the start. */
+        addTimer(function () {
+            blast.classList.add("show");
+        }, budget + 350);
+
+        /*
+         * Return to the start only AFTER the "Yes" audio has played in full
+         * (~17s). Primary trigger is the audio's own 'ended' event, so it
+         * always matches the real clip length. A fallback timer (clip length
+         * + buffer) guarantees the redirect still happens if the audio is
+         * blocked or 'ended' never fires (e.g. mobile autoplay limits).
+         * endToIndex is one-shot, so whichever fires first wins.
+         */
+        if (yesAudio) {
+            yesAudio.addEventListener("ended", function () {
+                endToIndex();
+            }, { once: true });
+        }
+
+        /* Reuses durationMs computed above. */
+        addTimer(function () {
+            endToIndex();
+        }, durationMs + 900);
+    }
+
+    function choose(button) {
+        if (destroyed || button.disabled) return;
+
+        options.forEach(function (item) {
+            item.disabled = true;
+        });
+
+        button.classList.add("selected");
+
+        clearTimers();
+        MediaManager.stop();
+
+        const answer = button.dataset.answer;
+
+        if (answer === "yes") {
+            aggressiveDestroyThenEnd();
+            return;
+        }
+
+        if (answer === "kahibini") {
+            /*
+             * Play it, but DO NOT wait for it.
+             * Page 7 navigation is independent of audio playback.
+             */
+            playAudioNonBlocking(kahibiniAudio);
+
+            /*
+             * 120 ms is only enough for the tap state to render.
+             * It is deliberately NOT tied to the 0.01/0.02 sec audio length.
+             */
+            addTimer(function () {
+                goToPage7();
+            }, 120);
+
+            return;
+        }
+
+        /*
+         * No -> Page 7 immediately. No audio dependency.
+         */
+        addTimer(function () {
+            goToPage7();
+        }, 120);
+    }
+
+    options.forEach(function (button) {
+        button.addEventListener("click", function () {
+            choose(button);
+        });
+    });
+
+    function resetPage6() {
+        clearTimers();
+        destroyed = false;
+        ended = false;
+
+        blast.classList.remove("show");
+        card.classList.remove("page6-destroying");
+
+        /* Restore any element caught mid-teardown. */
+        document.querySelectorAll(".p6-destroy").forEach(function (node) {
+            node.classList.remove("p6-destroy");
+            node.style.removeProperty("--fx");
+            node.style.removeProperty("--fy");
+            node.style.removeProperty("--fr");
+        });
+
+        /* Clear leftover debris sparks. */
+        document.querySelectorAll(".p6-particle").forEach(function (p) {
+            if (p.parentNode) p.parentNode.removeChild(p);
+        });
+
+        options.forEach(function (button) {
+            button.disabled = false;
+            button.classList.remove("selected");
+            button.style.opacity = "";
+            button.style.transform = "";
+            button.style.filter = "";
+        });
+
+        stopPage6Audio();
+        MediaManager.stop();
+    }
+
+    window.addEventListener("pagehide", function () {
+        /*
+         * Actually leaving the page: safe to cancel pending timers.
+         * Do NOT set destroyed on a mere hide — only real navigation
+         * (goToPage7 / endToIndex) marks the page destroyed.
+         */
+        clearTimers();
+        stopPage6Audio();
+        MediaManager.stop();
+    });
+
+    window.addEventListener("pageshow", function () {
+        resetPage6();
+    });
+
+    document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+            /*
+             * Only pause AUDIO when backgrounded. Never clear timers here:
+             * Android fires this during ordinary taps/transitions, and
+             * clearing an in-flight navigation timer would freeze the flow.
+             */
+            stopPage6Audio();
+            MediaManager.stop();
+        } else {
+            /*
+             * Returned to foreground without a full pageshow: re-enable taps.
+             */
+            destroyed = false;
+        }
+    });
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", resetPage6, { once: true });
+    } else {
+        resetPage6();
+    }
+
+})();
+</script>
+
+</body>
+</html>

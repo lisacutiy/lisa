@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+
+<html lang="or">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width,
+        initial-scale=1.0,
+        maximum-scale=1.0,
+        user-scalable=no,
+        viewport-fit=cover">
+
+    <meta name="theme-color" content="#fff5f0">
+
+    <title>Hi lisa… ♡</title>
+
+
+    <link rel="stylesheet" href="./css/style.css">
+
+</head>
+
+
+<body>
+
+
+    <main class="page question-page">
+
+
+        <header class="top-brand">
+
+            <div class="top-logo">
+
+                <span class="top-logo-heart">
+                    ♡
+                </span>
+
+                FOR YOU
+
+            </div>
+
+
+            <div class="progress">
+                01 / ?
+            </div>
+
+        </header>
+
+
+        <section class="question-content">
+
+
+            <div class="question-intro">
+
+                <div class="question-intro-small">
+                     ଦେଖି… 
+                </div>
+
+                <h1 class="question-intro-title">
+                    Guess କଲ.. 
+                </h1>
+
+            </div>
+
+
+            <div class="question-card">
+
+
+                <div class="question-card-heart">
+                    ♡
+                </div>
+
+
+                <h2 class="question-text">
+
+                    ମୁଁ ତୁମକୁ ପ୍ରଥମେ<br>
+                    କଉଁଠି ଦେଖିଥିବି ?
+
+                </h2>
+
+
+                <div class="options">
+
+
+                    <button class="option" data-answer="wrong">
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        ତମ ଘରେ
+
+                    </button>
+
+
+                    <button class="option" data-answer="correct">
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        College ରେ
+
+                    </button>
+
+
+                    <button class="option" data-answer="wrong">
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        ଯାତ୍ରାରେ
+
+                    </button>
+
+
+                </div>
+
+
+                <div class="question-hint">
+                    ଭାବିକି ଉତ୍ତର ଦିଅ 😌
+                </div>
+
+
+                <div id="errorMessage" class="error-message">
+                    Nice try!
+                    କିନ୍ତୁ ପୁଣିଥରେ ଚେଷ୍ଟା କର 😜
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+    <div id="audioHint" class="audio-hint"></div>
+
+
+    <audio id="idleAudio" preload="auto">
+
+        <source src="assets/audio/idle-question.mp3" type="audio/mpeg">
+
+    </audio>
+
+
+    <div id="successOverlay" class="success-overlay">
+
+
+        <div class="success-card">
+
+            <div class="success-heart">
+                ♥
+            </div>
+
+            <div class="success-title">
+                ହଁ… Sanda College ରେ! 😌
+            </div>
+
+            <div class="success-text">
+                Let' move… ❤️
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <script src="./js/spa-nav.js"></script>
+    <script src="./js/media.js"></script>
+
+
+    <script>
+
+        let page2Ready =
+            false;
+
+        let page2Navigating =
+            false;
+
+
+        /* =========================================================
+           MEDIA
+        ========================================================= */
+
+        MediaManager.init({
+
+            idleTime:
+                7000,
+
+            audio:
+                "assets/audio/idle-question.mp3",
+
+            hint:
+                "ତମେ ଏତେ ଭାବୁଛ କଣ? 😌",
+
+            playOnce:
+                true
+
+        });
+
+
+        /* =========================================================
+           ELEMENTS
+        ========================================================= */
+
+        const options =
+            document.querySelectorAll(
+                ".option"
+            );
+
+
+        const errorMessage =
+            document.getElementById(
+                "errorMessage"
+            );
+
+
+        const successOverlay =
+            document.getElementById(
+                "successOverlay"
+            );
+
+
+        /* =========================================================
+           RESET QUESTION
+        ========================================================= */
+
+        function resetPage2Question() {
+
+            /*
+             * Prevent stale success state.
+             */
+
+            page2Navigating =
+                false;
+
+
+            /*
+             * Enable every option.
+             */
+
+            options.forEach(
+                option => {
+
+                    option.disabled =
+                        false;
+
+
+                    option.classList.remove(
+                        "correct",
+                        "wrong",
+                        "selected"
+                    );
+
+                }
+            );
+
+
+            /*
+             * Remove error message.
+             */
+
+            if (
+                errorMessage
+            ) {
+
+                errorMessage.classList.remove(
+                    "show"
+                );
+
+            }
+
+
+            /*
+             * Remove success popup.
+             */
+
+            if (
+                successOverlay
+            ) {
+
+                successOverlay.classList.remove(
+                    "show"
+                );
+
+            }
+
+
+            /*
+             * Completely restart
+             * the 7-second question timer.
+             */
+
+            MediaManager.resetForNewQuestion();
+
+        }
+
+
+        /* =========================================================
+           WRONG ANSWER
+        ========================================================= */
+
+        function showWrongAnswer(
+            button
+        ) {
+
+            button.classList.remove(
+                "wrong"
+            );
+
+
+            void button.offsetWidth;
+
+
+            button.classList.add(
+                "wrong"
+            );
+
+
+            errorMessage.classList.remove(
+                "show"
+            );
+
+
+            void errorMessage.offsetWidth;
+
+
+            errorMessage.classList.add(
+                "show"
+            );
+
+
+            setTimeout(
+                () => {
+
+                    if (
+                        !page2Navigating
+                    ) {
+
+                        errorMessage.classList.remove(
+                            "show"
+                        );
+
+                        button.classList.remove(
+                            "wrong"
+                        );
+
+                    }
+
+                },
+                2200
+            );
+
+        }
+
+
+        /* =========================================================
+           ANSWERS
+        ========================================================= */
+
+        options.forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    async event => {
+
+                        /*
+                         * Don't allow accidental
+                         * double navigation.
+                         */
+
+                        if (
+                            page2Navigating
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        await MediaManager.unlock();
+
+
+                        MediaManager.reset();
+
+
+                        const answer =
+                            button.dataset.answer;
+
+
+                        /* -----------------------------------------
+                           WRONG
+                        ----------------------------------------- */
+
+                        if (
+                            answer === "wrong"
+                        ) {
+
+                            showWrongAnswer(
+                                button
+                            );
+
+                            return;
+
+                        }
+
+
+                        /* -----------------------------------------
+                           CORRECT
+                        ----------------------------------------- */
+
+                        page2Navigating =
+                            true;
+
+
+                        button.classList.add(
+                            "correct"
+                        );
+
+
+                        options.forEach(
+                            option => {
+
+                                option.disabled =
+                                    true;
+
+                            }
+                        );
+
+
+                        MediaManager.stop();
+
+
+                        if (
+                            successOverlay
+                        ) {
+
+                            successOverlay.classList.add(
+                                "show"
+                            );
+
+                        }
+
+
+                        /*
+                         * Give the existing success
+                         * animation time to finish.
+                         */
+
+                        setTimeout(
+                            () => {
+
+                                spaNav(3, "./page3.html");
+
+                            },
+                            1900
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* =========================================================
+           MOBILE BACK / FORWARD
+        ========================================================= */
+
+        window.addEventListener(
+            "pageshow",
+            event => {
+
+                /*
+                 * Initial page load.
+                 */
+
+                if (
+                    !page2Ready
+                ) {
+
+                    page2Ready =
+                        true;
+
+                    return;
+
+                }
+
+
+                /*
+                 * Returning through mobile
+                 * Back/Forward cache.
+                 */
+
+                resetPage2Question();
+
+            }
+        );
+
+
+        /* =========================================================
+           PAGE HIDE
+        ========================================================= */
+
+        window.addEventListener(
+            "pagehide",
+            () => {
+
+                MediaManager.stop();
+
+            }
+        );
+
+
+        /* =========================================================
+           VISIBILITY
+        ========================================================= */
+
+        document.addEventListener(
+            "visibilitychange",
+            () => {
+
+                if (
+                    document.visibilityState ===
+                    "hidden"
+                ) {
+
+                    MediaManager.stop();
+
+                }
+
+            }
+        );
+
+    </script>
+</body>
+
+</html>

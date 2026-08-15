@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="or">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#fff8f5">
+<title>Color & Outfit ❤️</title>
+<link rel="stylesheet" href="./css/style.css">
+<style>
+/* Page 5 visual layer — intentionally self-contained and unchanged in spirit. */
+.page5-step { display:none; }
+.page5-step.active { display:block; animation:page5In .45s cubic-bezier(.22,1,.36,1); }
+@keyframes page5In {
+    from { opacity:0; transform:translateY(12px) scale(.985); }
+    to { opacity:1; transform:translateY(0) scale(1); }
+}
+.page5-option.selected {
+    transform:translateY(-2px) scale(1.015);
+}
+.page5-option {
+    transition:transform .22s ease, box-shadow .22s ease;
+}
+</style>
+</head>
+
+<body>
+<main class="page question-page" id="page5">
+
+<header class="top-brand">
+    <div class="top-logo">
+        <span class="top-logo-heart">♡</span>
+        FOR YOU
+    </div>
+    <div class="progress">05 / ?</div>
+</header>
+
+<section class="question-content">
+
+    <div class="question-intro">
+        <div class="question-intro-small">ଆଉ ଗୋଟିଏ cute question… ✨</div>
+        <h1 class="question-intro-title">ତୁମ ପସନ୍ଦ ଜାଣିବାକୁ ଚାହୁଁଛି ❤️</h1>
+    </div>
+
+    <div class="question-card" id="page5Card">
+
+        <div class="question-card-heart">♡</div>
+
+        <div class="page5-step active" id="page5Step1">
+
+            <div class="page9-number"> </div>
+
+            <h2 class="question-text">କଉ color ପସନ୍ଦ? 🎨</h2>
+
+            <div class="options">
+
+                <button type="button" class="option page5-option" data-answer="Blue">
+                    <span class="option-icon">💙</span>
+                    Blue
+                </button>
+
+                <button type="button" class="option page5-option" data-answer="Periwinkle/Lavender">
+                    <span class="option-icon">💜</span>
+                    Periwinkle/Lavender
+                </button>
+
+                <button type="button" class="option page5-option" data-answer="Soft pastel pink">
+                    <span class="option-icon">🩷</span>
+                    Soft pastel pink
+                </button>
+
+                <button type="button" class="option page5-option" data-answer="Red">
+                    <span class="option-icon">❤️</span>
+                    Red
+                </button>
+
+                <button type="button" class="option page5-option" data-answer="Brat Green">
+                    <span class="option-icon">💚</span>
+                    Brat Green
+                </button>
+
+                <button type="button" class="option page5-option" data-answer="Mustard-Leaning citrus yellow">
+                    <span class="option-icon">💛</span>
+                    Mustard-Leaning citrus yellow
+                </button>
+
+                <button type="button" class="option page5-option" data-answer="other">
+                    <span class="option-icon">✨</span>
+                    other
+                </button>
+
+            </div>
+
+            <div class="question-hint">ଗୋଟିଏ ବାଛ… 🤭</div>
+
+        </div>
+
+        <div class="page5-step" id="page5Step2">
+
+            <div class="page9-number"> </div>
+
+            <h2 class="question-text">କଉ outfit ପସନ୍ଦ? 👗</h2>
+
+            <div class="options">
+
+                <button type="button" class="option page5-option" data-answer="Kurti">
+                    <span class="option-icon">👗</span>
+                    Kurti
+                </button>
+
+                <button type="button" class="option page5-option" data-answer="Salwar Kameez">
+                    <span class="option-icon">✨</span>
+                    Salwar Kameez
+                </button>
+
+                <button type="button" class="option page5-option" data-answer="timeless Saree">
+                    <span class="option-icon">❤️</span>
+                    timeless Saree
+                </button>
+
+                <button type="button" class="option page5-option" data-answer="other">
+                    <span class="option-icon">✨</span>
+                    other
+                </button>
+
+            </div>
+
+            <div class="question-hint">ଏଥର ବି ଗୋଟିଏ ବାଛ… 😊</div>
+
+        </div>
+
+    </div>
+
+</section>
+</main>
+
+<script src="./lifecycle.js"></script>
+<script src="./js/spa-nav.js"></script>
+<script src="./js/media.js"></script>
+
+<script>
+(function () {
+    "use strict";
+
+    let destroyed = false;
+    let page5Step = 1;
+    let transitionTimer = null;
+
+    const step1 = document.getElementById("page5Step1");
+    const step2 = document.getElementById("page5Step2");
+    const card = document.getElementById("page5Card");
+
+    function clearPage5Timer() {
+        if (transitionTimer !== null) {
+            PageLifecycle.clear(transitionTimer);
+            transitionTimer = null;
+        }
+    }
+
+    function showStep(step) {
+        if (destroyed) return;
+
+        page5Step = step;
+
+        if (step === 1) {
+            step1.classList.add("active");
+            step2.classList.remove("active");
+        } else {
+            step1.classList.remove("active");
+            step2.classList.add("active");
+        }
+
+        const options = document.querySelectorAll(".page5-option");
+
+        options.forEach(function (button) {
+            button.disabled = false;
+            button.classList.remove("selected");
+        });
+
+        /*
+         * Timer audio is required on Pages 2-7.
+         */
+        MediaManager.resetForNewQuestion({
+            enabled: true,
+            duration: 7000
+        });
+    }
+
+    function goToPage6() {
+        if (destroyed) return;
+
+        destroyed = true;
+        clearPage5Timer();
+        MediaManager.stop();
+
+        /*
+         * Navigate directly. requestAnimationFrame is PAUSED while the page
+         * is hidden on mobile, so scheduling navigation inside it could drop
+         * the page change entirely and freeze the flow.
+         */
+        spaNav(6, "./page6.html");
+    }
+
+    function choose(button) {
+        if (destroyed || button.disabled) return;
+
+        button.disabled = true;
+        button.classList.add("selected");
+
+        clearPage5Timer();
+        MediaManager.stop();
+
+        if (page5Step === 1) {
+            transitionTimer = PageLifecycle.timeout(function () {
+                transitionTimer = null;
+                showStep(2);
+            }, 220);
+        } else {
+            transitionTimer = PageLifecycle.timeout(function () {
+                transitionTimer = null;
+                goToPage6();
+            }, 220);
+        }
+    }
+
+    document.querySelectorAll(".page5-option").forEach(function (button) {
+        button.addEventListener("click", function () {
+            choose(button);
+        });
+    });
+
+    function restorePage5() {
+        clearPage5Timer();
+        destroyed = false;
+        page5Step = 1;
+
+        step1.classList.add("active");
+        step2.classList.remove("active");
+
+        document.querySelectorAll(".page5-option").forEach(function (button) {
+            button.disabled = false;
+            button.classList.remove("selected");
+        });
+
+        MediaManager.resetForNewQuestion({
+            enabled: true,
+            duration: 7000
+        });
+    }
+
+    window.addEventListener("pagehide", function () {
+        /*
+         * We are actually leaving the page here, so it is safe to cancel
+         * a still-pending transition timer. Do NOT set destroyed on a mere
+         * hide — only real navigation (goToPage6) marks the page destroyed.
+         */
+        clearPage5Timer();
+        MediaManager.stop();
+    });
+
+    window.addEventListener("pageshow", function () {
+        restorePage5();
+    });
+
+    document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+            /*
+             * Only pause AUDIO when the tab is backgrounded. Never clear the
+             * navigation/transition timer here — Android fires this during
+             * ordinary taps, and clearing it would freeze the flow.
+             */
+            MediaManager.stop();
+        } else {
+            /*
+             * Coming back to the foreground without a full pageshow (common
+             * on Android app-switch): make sure taps work again.
+             */
+            destroyed = false;
+        }
+    });
+
+    /*
+     * Initial load is handled here. pageshow also fires on normal load,
+     * so the state remains deterministic.
+     */
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", restorePage5, { once: true });
+    } else {
+        restorePage5();
+    }
+
+})();
+</script>
+
+</body>
+</html>

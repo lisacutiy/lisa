@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="or">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width,
+        initial-scale=1.0,
+        maximum-scale=1.0,
+        user-scalable=no,
+        viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#fff5f0"
+    >
+
+    <title>Hi lisa… ♡</title>
+
+
+    <!-- =====================================================
+         SHARED CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="./css/style.css"
+    >
+
+
+    <!-- =====================================================
+         PAGE 7 CSS
+    ====================================================== -->
+
+    <style>
+
+        /*
+         * ---------------------------------------------------
+         * PAGE 7 QUESTION STATES
+         * ---------------------------------------------------
+         */
+
+        .page7-question {
+
+            display: none;
+
+            width: 100%;
+
+            animation:
+                page7CardIn
+                .48s
+                cubic-bezier(
+                    .22,
+                    .61,
+                    .36,
+                    1
+                );
+
+        }
+
+
+        .page7-question.active {
+
+            display: block;
+
+        }
+
+
+        @keyframes page7CardIn {
+
+            0% {
+
+                opacity: 0;
+
+                transform:
+                    translateY(18px)
+                    scale(.97);
+
+            }
+
+            100% {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+
+            }
+
+        }
+
+
+        /*
+         * ---------------------------------------------------
+         * OPTION PRESS EFFECT
+         * ---------------------------------------------------
+         */
+
+        .page7-option {
+
+            position: relative;
+
+            overflow: hidden;
+
+            transition:
+                transform .22s ease,
+                box-shadow .22s ease,
+                opacity .22s ease;
+
+        }
+
+
+        .page7-option::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 18px;
+
+            height: 18px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .55
+                );
+
+            left: var(--tap-x, 50%);
+
+            top: var(--tap-y, 50%);
+
+            transform:
+                translate(-50%, -50%)
+                scale(0);
+
+            opacity: 0;
+
+            pointer-events: none;
+
+        }
+
+
+        .page7-option.ripple::after {
+
+            animation:
+                page7Ripple
+                .55s
+                ease-out;
+
+        }
+
+
+        @keyframes page7Ripple {
+
+            0% {
+
+                transform:
+                    translate(-50%, -50%)
+                    scale(0);
+
+                opacity: .75;
+
+            }
+
+            100% {
+
+                transform:
+                    translate(-50%, -50%)
+                    scale(12);
+
+                opacity: 0;
+
+            }
+
+        }
+
+
+        /*
+         * ---------------------------------------------------
+         * SELECTED OPTION
+         * ---------------------------------------------------
+         */
+
+        .page7-option.selected {
+
+            transform:
+                translateY(-2px)
+                scale(1.015);
+
+            box-shadow:
+                0 12px 30px
+                rgba(
+                    91,
+                    30,
+                    49,
+                    .18
+                );
+
+        }
+
+
+        /*
+         * ---------------------------------------------------
+         * OPTION ICON
+         * ---------------------------------------------------
+         */
+
+        .page7-option .option-icon {
+
+            transition:
+                transform .3s ease;
+
+        }
+
+
+        .page7-option.selected
+        .option-icon {
+
+            transform:
+                scale(1.18);
+
+        }
+
+
+        /*
+         * ---------------------------------------------------
+         * TRANSITION BETWEEN QUESTIONS
+         * ---------------------------------------------------
+         */
+
+        .page7-question.leaving {
+
+            animation:
+                page7CardOut
+                .34s
+                cubic-bezier(
+                    .55,
+                    .085,
+                    .68,
+                    .53
+                )
+                forwards;
+
+        }
+
+
+        @keyframes page7CardOut {
+
+            0% {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+
+            }
+
+            100% {
+
+                opacity: 0;
+
+                transform:
+                    translateY(-18px)
+                    scale(.97);
+
+            }
+
+        }
+
+
+        /*
+         * ---------------------------------------------------
+         * QUESTION NUMBER
+         * ---------------------------------------------------
+         */
+
+        .page7-question-number {
+
+            margin-bottom:
+                10px;
+
+            font-size:
+                12px;
+
+            letter-spacing:
+                .16em;
+
+            text-transform:
+                uppercase;
+
+            opacity:
+                .58;
+
+        }
+
+
+        /*
+         * ---------------------------------------------------
+         * SMALL TRANSITION HEART
+         * ---------------------------------------------------
+         */
+
+        .page7-transition-heart {
+
+            position: fixed;
+
+            left: 50%;
+
+            top: 50%;
+
+            z-index: 9999;
+
+            pointer-events: none;
+
+            font-size:
+                24px;
+
+            opacity: 0;
+
+            transform:
+                translate(-50%, -50%)
+                scale(.5);
+
+        }
+
+
+        .page7-transition-heart.animate {
+
+            animation:
+                page7HeartTransition
+                .65s
+                cubic-bezier(
+                    .22,
+                    1,
+                    .36,
+                    1
+                );
+
+        }
+
+
+        @keyframes page7HeartTransition {
+
+            0% {
+
+                opacity: 0;
+
+                transform:
+                    translate(-50%, -50%)
+                    scale(.4);
+
+            }
+
+            25% {
+
+                opacity: 1;
+
+                transform:
+                    translate(-50%, -50%)
+                    scale(1.25);
+
+            }
+
+            100% {
+
+                opacity: 0;
+
+                transform:
+                    translate(-50%, -50%)
+                    scale(1.7);
+
+            }
+
+        }
+
+
+        /*
+         * ---------------------------------------------------
+         * MOBILE
+         * ---------------------------------------------------
+         */
+
+        @media (max-width: 600px) {
+
+            .page7-option {
+
+                -webkit-tap-highlight-color:
+                    transparent;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     PAGE 7
+========================================================== -->
+
+<main
+    class="page question-page"
+    id="page7"
+>
+
+
+    <!-- =====================================================
+         TOP BRAND
+    ====================================================== -->
+
+    <header class="top-brand">
+
+        <div
+            class="top-logo"
+            id="page7Logo"
+        >
+
+            <span class="top-logo-heart">
+                ♡
+            </span>
+
+            FOR YOU
+
+        </div>
+
+
+        <div
+            class="progress"
+            id="page7Progress"
+        >
+
+            07 / ?
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         QUESTION CONTENT
+    ====================================================== -->
+
+    <section class="question-content">
+
+
+        <div class="question-intro">
+
+            <div
+                class="question-intro-small"
+                id="page7SmallHeading"
+            >
+
+                ଭଲ ଝିଅ ❤️
+
+            </div>
+
+
+            <h1
+                class="question-intro-title"
+                id="page7MainHeading"
+            >
+
+                ଆଚ୍ଛା କୁହ ତ 🤭❤️
+
+            </h1>
+
+        </div>
+
+
+
+        <!-- =================================================
+             QUESTION CARD
+        ================================================== -->
+
+        <div
+            class="question-card"
+            id="page7Card"
+        >
+
+
+            <div
+                class="question-card-heart"
+                id="page7CardHeart"
+            >
+
+                ♡
+
+            </div>
+
+
+
+            <!-- =================================================
+                 QUESTION 1
+            ================================================== -->
+
+            <div
+                class="page7-question active"
+                id="page7Question1"
+            >
+
+
+                <div
+                    class="page7-question-number"
+                >
+
+                    
+
+                </div>
+
+
+                <h2
+                    class="question-text"
+                >
+
+                    ତମକୁ କେମିତିକା<br>
+                    ପିଲା ପସନ୍ଦ? ❤️
+
+                </h2>
+
+
+
+                <div
+                    class="options"
+                    id="page7Options1"
+                >
+
+
+                    <button
+                        type="button"
+                        class="option page7-option"
+                        data-answer="rich"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        Rich
+
+                    </button>
+
+
+
+                    <button
+                        type="button"
+                        class="option page7-option"
+                        data-answer="handsome"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        Handsome
+
+                    </button>
+
+
+
+                    <button
+                        type="button"
+                        class="option page7-option"
+                        data-answer="loyal"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        Loyal
+
+                    </button>
+
+
+                </div>
+
+
+
+                <div
+                    class="question-hint"
+                >
+
+                    ଭଲକରି ଭାବିକି କହିବ… 😌
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 QUESTION 2
+            ================================================== -->
+
+            <div
+                class="page7-question"
+                id="page7Question2"
+            >
+
+
+                <div
+                    class="page7-question-number"
+                >
+
+                 
+
+                </div>
+
+
+                <h2
+                    class="question-text"
+                >
+
+                    ତମକୁ Date ପାଇଁ<br>
+                     କଉ ଜାଗା ଭଲ ଲାଗେ? ❤️💕
+
+                </h2>
+
+
+
+                <div
+                    class="options"
+                    id="page7Options2"
+                >
+
+
+                    <button
+                        type="button"
+                        class="option page7-option"
+                        data-answer="mandira"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        ମନ୍ଦିର
+
+                    </button>
+
+
+
+                    <button
+                        type="button"
+                        class="option page7-option"
+                        data-answer="cafe"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        Cafe
+
+                    </button>
+
+
+
+                    <button
+                        type="button"
+                        class="option page7-option"
+                        data-answer="movie"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        Movie Theatre
+
+                    </button>
+
+
+                </div>
+
+
+
+                <div
+                    class="question-hint"
+                >
+
+                    ଏଇଟା ଟିକେ interesting… 👀
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     TRANSITION HEART
+========================================================== -->
+
+<div
+    id="page7TransitionHeart"
+    class="page7-transition-heart"
+>
+
+    ❤️
+
+</div>
+
+
+
+<!-- =========================================================
+     IDLE AUDIO
+========================================================== -->
+
+<audio
+    id="idleAudio"
+    preload="auto"
+    playsinline
+>
+
+    <source
+        src="assets/audio/idle-question.mp3"
+        type="audio/mpeg"
+    >
+
+</audio>
+
+
+
+<!-- =========================================================
+     SHARED MEDIA JS
+========================================================== -->
+
+<script src="./js/spa-nav.js"></script>
+<script src="./js/media.js"></script>
+
+
+
+<script>
+
+/* =========================================================
+   PAGE 7 STATE
+========================================================= */
+
+let page7Navigating =
+    false;
+
+
+let page7Transitioning =
+    false;
+
+
+let page7FirstLoad =
+    true;
+
+
+let page7CurrentQuestion =
+    1;
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const page7Question1 =
+    document.getElementById(
+        "page7Question1"
+    );
+
+
+const page7Question2 =
+    document.getElementById(
+        "page7Question2"
+    );
+
+
+const page7TransitionHeart =
+    document.getElementById(
+        "page7TransitionHeart"
+    );
+
+
+const page7Options1 =
+    document.querySelectorAll(
+        "#page7Options1 .page7-option"
+    );
+
+
+const page7Options2 =
+    document.querySelectorAll(
+        "#page7Options2 .page7-option"
+    );
+
+
+/* =========================================================
+   START SHARED 7 SECOND AUDIO SYSTEM
+========================================================= */
+
+if (
+    typeof MediaManager !==
+    "undefined"
+) {
+
+    MediaManager.init({
+
+        idleTime:
+            7000,
+
+        audio:
+            "assets/audio/idle-question.mp3",
+
+        hint:
+            "ତମେ ଏତେ ଭାବୁଛ କାହିଁକି? 😌",
+
+        playOnce:
+            true
+
+    });
+
+}
+
+
+/* =========================================================
+   SAVE ANSWER
+========================================================= */
+
+function savePage7Answer(
+    question,
+    answer
+) {
+
+    try {
+
+        sessionStorage.setItem(
+            "page7_question_" +
+            question,
+            answer
+        );
+
+    } catch (
+        error
+    ) {
+
+        console.warn(
+            "Could not save Page 7 answer:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   HEART TRANSITION
+========================================================= */
+
+function playHeartTransition() {
+
+    page7TransitionHeart.classList.remove(
+        "animate"
+    );
+
+
+    /*
+     * Force browser reflow so the
+     * animation can run every time.
+     */
+
+    void page7TransitionHeart.offsetWidth;
+
+
+    page7TransitionHeart.classList.add(
+        "animate"
+    );
+
+
+    setTimeout(
+        () => {
+
+            page7TransitionHeart.classList.remove(
+                "animate"
+            );
+
+        },
+        700
+    );
+
+}
+
+
+/* =========================================================
+   QUESTION TRANSITION
+========================================================= */
+
+function moveToQuestion2() {
+
+    if (
+        page7Transitioning ||
+        page7Navigating
+    ) {
+
+        return;
+
+    }
+
+
+    page7Transitioning =
+        true;
+
+
+    /*
+     * Stop idle audio when an answer
+     * has actually been selected.
+     */
+
+    try {
+
+        if (
+            typeof MediaManager !==
+            "undefined"
+        ) {
+
+            MediaManager.stop();
+
+        }
+
+    } catch (
+        error
+    ) {
+
+        console.warn(error);
+
+    }
+
+
+    page7Question1.classList.add(
+        "leaving"
+    );
+
+
+    playHeartTransition();
+
+
+    setTimeout(
+        () => {
+
+            page7Question1.classList.remove(
+                "active",
+                "leaving"
+            );
+
+
+            page7Question2.classList.add(
+                "active"
+            );
+
+
+            page7CurrentQuestion =
+                2;
+
+
+            page7Transitioning =
+                false;
+
+
+            /*
+             * Restart the 7-second timer
+             * for Question 2.
+             */
+
+            if (
+                typeof MediaManager !==
+                "undefined"
+            ) {
+
+                try {
+
+                    MediaManager.reset();
+
+                } catch (
+                    error
+                ) {
+
+                    console.warn(error);
+
+                }
+
+            }
+
+        },
+        380
+    );
+
+}
+
+
+/* =========================================================
+   GO TO PAGE 8
+========================================================= */
+
+function goToPage8() {
+
+    if (
+        page7Navigating
+    ) {
+
+        return;
+
+    }
+
+
+    page7Navigating =
+        true;
+
+
+    /*
+     * Stop question audio.
+     */
+
+    try {
+
+        if (
+            typeof MediaManager !==
+            "undefined"
+        ) {
+
+            MediaManager.stop();
+
+        }
+
+    } catch (
+        error
+    ) {
+
+        console.warn(error);
+
+    }
+
+
+    /*
+     * Small delay keeps the button
+     * animation smooth on mobile.
+     */
+
+    setTimeout(
+        () => {
+
+            spaNav(8, "./page8.html");
+
+        },
+        220
+    );
+
+}
+
+
+/* =========================================================
+   RIPPLE EFFECT
+========================================================= */
+
+function addRipple(
+    event
+) {
+
+    const button =
+        event.currentTarget;
+
+
+    const rect =
+        button.getBoundingClientRect();
+
+
+    const clientX =
+        event.clientX ||
+        (
+            rect.left +
+            rect.width / 2
+        );
+
+
+    const clientY =
+        event.clientY ||
+        (
+            rect.top +
+            rect.height / 2
+        );
+
+
+    button.style.setProperty(
+        "--tap-x",
+        (
+            clientX -
+            rect.left
+        ) + "px"
+    );
+
+
+    button.style.setProperty(
+        "--tap-y",
+        (
+            clientY -
+            rect.top
+        ) + "px"
+    );
+
+
+    button.classList.remove(
+        "ripple"
+    );
+
+
+    void button.offsetWidth;
+
+
+    button.classList.add(
+        "ripple"
+    );
+
+
+    setTimeout(
+        () => {
+
+            button.classList.remove(
+                "ripple"
+            );
+
+        },
+        600
+    );
+
+}
+
+
+/* =========================================================
+   QUESTION 1 OPTIONS
+========================================================= */
+
+page7Options1.forEach(
+    option => {
+
+        option.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    page7Navigating ||
+                    page7Transitioning
+                ) {
+
+                    return;
+
+                }
+
+
+                addRipple(event);
+
+
+                const answer =
+                    option.dataset.answer;
+
+
+                /*
+                 * Save selected answer.
+                 */
+
+                savePage7Answer(
+                    1,
+                    answer
+                );
+
+
+                /*
+                 * Visual selection.
+                 */
+
+                page7Options1.forEach(
+                    item => {
+
+                        item.disabled =
+                            true;
+
+                    }
+                );
+
+
+                option.classList.add(
+                    "selected"
+                );
+
+
+                /*
+                 * Move to Question 2.
+                 */
+
+                setTimeout(
+                    () => {
+
+                        moveToQuestion2();
+
+                    },
+                    260
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   QUESTION 2 OPTIONS
+========================================================= */
+
+page7Options2.forEach(
+    option => {
+
+        option.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    page7Navigating ||
+                    page7Transitioning
+                ) {
+
+                    return;
+
+                }
+
+
+                addRipple(event);
+
+
+                const answer =
+                    option.dataset.answer;
+
+
+                /*
+                 * Save second answer.
+                 */
+
+                savePage7Answer(
+                    2,
+                    answer
+                );
+
+
+                /*
+                 * Stop further tapping.
+                 */
+
+                page7Options2.forEach(
+                    item => {
+
+                        item.disabled =
+                            true;
+
+                    }
+                );
+
+
+                option.classList.add(
+                    "selected"
+                );
+
+
+                /*
+                 * Navigate to Page 8.
+                 */
+
+                setTimeout(
+                    () => {
+
+                        goToPage8();
+
+                    },
+                    300
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   RESET PAGE 7
+========================================================= */
+
+function resetPage7() {
+
+    page7Navigating =
+        false;
+
+
+    page7Transitioning =
+        false;
+
+
+    page7CurrentQuestion =
+        1;
+
+
+    /*
+     * Stop media.
+     */
+
+    try {
+
+        if (
+            typeof MediaManager !==
+            "undefined"
+        ) {
+
+            MediaManager.stop();
+
+        }
+
+    } catch (
+        error
+    ) {
+
+        console.warn(error);
+
+    }
+
+
+    /*
+     * Reset question 1.
+     */
+
+    page7Question1.classList.remove(
+        "leaving"
+    );
+
+
+    page7Question1.classList.add(
+        "active"
+    );
+
+
+    /*
+     * Reset question 2.
+     */
+
+    page7Question2.classList.remove(
+        "active",
+        "leaving"
+    );
+
+
+    /*
+     * Reset options.
+     */
+
+    document
+        .querySelectorAll(
+            ".page7-option"
+        )
+        .forEach(
+            option => {
+
+                option.disabled =
+                    false;
+
+                option.classList.remove(
+                    "selected",
+                    "correct",
+                    "wrong",
+                    "ripple"
+                );
+
+            }
+        );
+
+
+    /*
+     * Remove transition animation.
+     */
+
+    page7TransitionHeart.classList.remove(
+        "animate"
+    );
+
+}
+
+
+/* =========================================================
+   PAGE SHOW
+   IMPORTANT FOR MOBILE BACK/FORWARD CACHE
+========================================================= */
+
+window.addEventListener(
+    "pageshow",
+    event => {
+
+        /*
+         * The first pageshow is the
+         * normal initial page load.
+         */
+
+        if (
+            page7FirstLoad
+        ) {
+
+            page7FirstLoad =
+                false;
+
+            return;
+
+        }
+
+
+        /*
+         * If the browser restores Page 7
+         * from bfcache after Back navigation,
+         * completely reset its question state.
+         */
+
+        resetPage7();
+
+    }
+);
+
+
+/* =========================================================
+   PAGE HIDE
+========================================================= */
+
+window.addEventListener(
+    "pagehide",
+    () => {
+
+        try {
+
+            if (
+                typeof MediaManager !==
+                "undefined"
+            ) {
+
+                MediaManager.stop();
+
+            }
+
+        } catch (
+            error
+        ) {
+
+            console.warn(error);
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   DOM READY
+========================================================= */
+
+window.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        page7Navigating =
+            false;
+
+        page7Transitioning =
+            false;
+
+        page7CurrentQuestion =
+            1;
+
+    }
+);
+
+
+/* =========================================================
+   TOUCH FEEDBACK
+========================================================= */
+
+document
+    .querySelectorAll(
+        ".page7-option"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "touchstart",
+                () => {
+
+                    if (
+                        button.disabled
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    button.style.transform =
+                        "scale(.985)";
+
+                },
+                {
+                    passive: true
+                }
+            );
+
+
+            button.addEventListener(
+                "touchend",
+                () => {
+
+                    button.style.transform =
+                        "";
+
+                },
+                {
+                    passive: true
+                }
+            );
+
+        }
+    );
+
+</script>
+
+</body>
+
+</html>

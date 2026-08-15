@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="or">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#fff5f0">
+<title>Do u like me? ❤️</title>
+<link rel="stylesheet" href="./css/style.css">
+<style>
+
+        /*
+         * =================================================
+         * QUESTION STATES
+         * =================================================
+         */
+
+        .page8-step {
+
+            display: none;
+
+            width: 100%;
+
+            animation:
+                page8In
+                .48s
+                cubic-bezier(
+                    .22,
+                    .61,
+                    .36,
+                    1
+                );
+
+        }
+
+
+        .page8-step.active {
+
+            display: block;
+
+        }
+
+
+        @keyframes page8In {
+
+            0% {
+
+                opacity: 0;
+
+                transform:
+                    translateY(18px)
+                    scale(.97);
+
+            }
+
+            100% {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+
+            }
+
+        }
+
+
+        /*
+         * =================================================
+         * EXIT ANIMATION
+         * =================================================
+         */
+
+        .page8-step.leaving {
+
+            animation:
+                page8Out
+                .35s
+                ease
+                forwards;
+
+        }
+
+
+        @keyframes page8Out {
+
+            0% {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+
+            }
+
+            100% {
+
+                opacity: 0;
+
+                transform:
+                    translateY(-18px)
+                    scale(.97);
+
+            }
+
+        }
+
+
+        /*
+         * =================================================
+         * OPTION BUTTON
+         * =================================================
+         */
+
+        .page8-option {
+
+            position: relative;
+
+            overflow: hidden;
+
+            transition:
+                transform .22s ease,
+                box-shadow .22s ease;
+
+            -webkit-tap-highlight-color:
+                transparent;
+
+        }
+
+
+        .page8-option:active {
+
+            transform:
+                scale(.985);
+
+        }
+
+
+        /*
+         * =================================================
+         * RIPPLE
+         * =================================================
+         */
+
+        .page8-option::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 20px;
+
+            height: 20px;
+
+            border-radius: 50%;
+
+            left:
+                var(--tap-x, 50%);
+
+            top:
+                var(--tap-y, 50%);
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .55
+                );
+
+            transform:
+                translate(
+                    -50%,
+                    -50%
+                )
+                scale(0);
+
+            pointer-events:
+                none;
+
+        }
+
+
+        .page8-option.ripple::after {
+
+            animation:
+                page8Ripple
+                .55s
+                ease-out;
+
+        }
+
+
+        @keyframes page8Ripple {
+
+            0% {
+
+                opacity:
+                    .75;
+
+                transform:
+                    translate(
+                        -50%,
+                        -50%
+                    )
+                    scale(0);
+
+            }
+
+            100% {
+
+                opacity:
+                    0;
+
+                transform:
+                    translate(
+                        -50%,
+                        -50%
+                    )
+                    scale(12);
+
+            }
+
+        }
+
+
+        /*
+         * =================================================
+         * SELECTED
+         * =================================================
+         */
+
+        .page8-option.selected {
+
+            transform:
+                translateY(-2px)
+                scale(1.015);
+
+            box-shadow:
+                0 12px 30px
+                rgba(
+                    91,
+                    30,
+                    49,
+                    .18
+                );
+
+        }
+
+
+        /*
+         * =================================================
+         * FLIRTY REVEAL
+         * =================================================
+         */
+
+        .page8-reveal {
+
+            margin-top:
+                22px;
+
+            padding:
+                16px 17px;
+
+            border-radius:
+                18px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .68
+                );
+
+            border:
+                1px solid
+                rgba(
+                    91,
+                    30,
+                    49,
+                    .08
+                );
+
+            box-shadow:
+                0 10px 28px
+                rgba(
+                    91,
+                    30,
+                    49,
+                    .08
+                );
+
+            opacity: 0;
+
+            transform:
+                translateY(10px)
+                scale(.97);
+
+            pointer-events:
+                none;
+
+        }
+
+
+        .page8-reveal.show {
+
+            animation:
+                page8Reveal
+                .55s
+                cubic-bezier(
+                    .22,
+                    1,
+                    .36,
+                    1
+                )
+                forwards;
+
+        }
+
+
+        @keyframes page8Reveal {
+
+            0% {
+
+                opacity: 0;
+
+                transform:
+                    translateY(10px)
+                    scale(.97);
+
+            }
+
+            100% {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+
+            }
+
+        }
+
+
+        .page8-reveal-label {
+
+            font-size:
+                11px;
+
+            letter-spacing:
+                .12em;
+
+            text-transform:
+                uppercase;
+
+            opacity:
+                .48;
+
+            margin-bottom:
+                6px;
+
+        }
+
+
+        .page8-reveal-text {
+
+            font-family:
+                "Noto Sans Oriya",
+                "Noto Sans Odia",
+                sans-serif;
+
+            font-size:
+                clamp(
+                    17px,
+                    4.5vw,
+                    22px
+                );
+
+            line-height:
+                1.55;
+
+            font-weight:
+                650;
+
+            color:
+                #5b1e31;
+
+        }
+
+
+        /*
+         * =================================================
+         * POPUP
+         * =================================================
+         */
+
+        .page8-popup {
+
+            position: fixed;
+
+            left: 50%;
+
+            top: 50%;
+
+            z-index:
+                99999;
+
+            width:
+                max-content;
+
+            max-width:
+                calc(100vw - 36px);
+
+            padding:
+                18px 22px;
+
+            border-radius:
+                20px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .96
+                );
+
+            box-shadow:
+                0 20px 60px
+                rgba(
+                    91,
+                    30,
+                    49,
+                    .20
+                );
+
+            color:
+                #5b1e31;
+
+            text-align:
+                center;
+
+            opacity: 0;
+
+            transform:
+                translate(
+                    -50%,
+                    -50%
+                )
+                scale(.82);
+
+            pointer-events:
+                none;
+
+            transition:
+                opacity .28s ease,
+                transform .4s
+                cubic-bezier(
+                    .22,
+                    1,
+                    .36,
+                    1
+                );
+
+        }
+
+
+        .page8-popup.show {
+
+            opacity: 1;
+
+            transform:
+                translate(
+                    -50%,
+                    -50%
+                )
+                scale(1);
+
+        }
+
+
+        .page8-popup-text {
+
+            font-family:
+                "Noto Sans Oriya",
+                "Noto Sans Odia",
+                sans-serif;
+
+            font-size:
+                clamp(
+                    18px,
+                    5vw,
+                    24px
+                );
+
+            line-height:
+                1.55;
+
+            font-weight:
+                700;
+
+        }
+
+
+        /*
+         * =================================================
+         * SMALL NEXT BUTTON
+         * =================================================
+         */
+
+        .page8-next-wrap {
+
+            display:
+                flex;
+
+            justify-content:
+                center;
+
+            margin-top:
+                18px;
+
+        }
+
+
+        .page8-next {
+
+            border:
+                0;
+
+            background:
+                transparent;
+
+            color:
+                #5b1e31;
+
+            font-family:
+                inherit;
+
+            font-size:
+                13px;
+
+            font-weight:
+                650;
+
+            padding:
+                8px 13px;
+
+            border-radius:
+                999px;
+
+            opacity:
+                .62;
+
+            cursor:
+                pointer;
+
+            transition:
+                opacity .2s ease,
+                transform .2s ease;
+
+        }
+
+
+        .page8-next:hover {
+
+            opacity:
+                1;
+
+            transform:
+                translateX(2px);
+
+        }
+
+
+        /*
+         * =================================================
+         * PICKUP LINE NUMBER
+         * =================================================
+         */
+
+        .page8-number {
+
+            margin-bottom:
+                10px;
+
+            font-size:
+                11px;
+
+            letter-spacing:
+                .16em;
+
+            text-transform:
+                uppercase;
+
+            opacity:
+                .48;
+
+        }
+
+
+        /*
+         * =================================================
+         * HEART TRANSITION
+         * =================================================
+         */
+
+        .page8-heart {
+
+            position:
+                fixed;
+
+            left:
+                50%;
+
+            top:
+                50%;
+
+            z-index:
+                100000;
+
+            pointer-events:
+                none;
+
+            opacity:
+                0;
+
+            font-size:
+                24px;
+
+        }
+
+
+        .page8-heart.animate {
+
+            animation:
+                page8Heart
+                .7s
+                cubic-bezier(
+                    .22,
+                    1,
+                    .36,
+                    1
+                );
+
+        }
+
+
+        @keyframes page8Heart {
+
+            0% {
+
+                opacity:
+                    0;
+
+                transform:
+                    translate(
+                        -50%,
+                        -50%
+                    )
+                    scale(.4);
+
+            }
+
+            25% {
+
+                opacity:
+                    1;
+
+                transform:
+                    translate(
+                        -50%,
+                        -50%
+                    )
+                    scale(1.25);
+
+            }
+
+            100% {
+
+                opacity:
+                    0;
+
+                transform:
+                    translate(
+                        -50%,
+                        -50%
+                    )
+                    scale(1.8);
+
+            }
+
+        }
+
+
+        /*
+         * =================================================
+         * MOBILE
+         * =================================================
+         */
+
+        @media (max-width: 600px) {
+
+            .page8-reveal {
+
+                margin-top:
+                    18px;
+
+                padding:
+                    14px;
+
+            }
+
+
+            .page8-next {
+
+                font-size:
+                    12px;
+
+            }
+
+        }
+
+    </style>
+<style>
+.page9-option {
+    position: relative;
+    overflow: hidden;
+    transition: transform .22s ease, box-shadow .22s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+.page9-option:active { transform: scale(.985); }
+.page9-option.selected {
+    transform: translateY(-2px) scale(1.015);
+    box-shadow: 0 12px 30px rgba(91,30,49,.18);
+}
+.page9-option::after {
+    content: "";
+    position: absolute;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    left: var(--tap-x, 50%);
+    top: var(--tap-y, 50%);
+    background: rgba(255,255,255,.55);
+    transform: translate(-50%,-50%) scale(0);
+    pointer-events: none;
+}
+.page9-option.ripple::after { animation: page9Ripple .55s ease-out; }
+@keyframes page9Ripple {
+    0% { opacity:.75; transform:translate(-50%,-50%) scale(0); }
+    100% { opacity:0; transform:translate(-50%,-50%) scale(12); }
+}
+.page9-popup {
+    position:fixed; left:50%; top:50%; z-index:99999;
+    width:max-content; max-width:calc(100vw - 36px);
+    padding:18px 22px; border-radius:20px;
+    background:rgba(255,255,255,.96);
+    box-shadow:0 20px 60px rgba(91,30,49,.20);
+    color:#5b1e31; text-align:center;
+    opacity:0; transform:translate(-50%,-50%) scale(.82);
+    pointer-events:none;
+    transition:opacity .28s ease, transform .4s cubic-bezier(.22,1,.36,1);
+}
+.page9-popup.show { opacity:1; transform:translate(-50%,-50%) scale(1); }
+.page9-popup-text {
+    font-family:"Noto Sans Oriya","Noto Sans Odia",sans-serif;
+    font-size:clamp(18px,5vw,24px); line-height:1.55; font-weight:700;
+}
+.page9-celebration {
+    position:fixed; inset:0; z-index:99998;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(255,245,240,.96);
+    backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px);
+    opacity:0; pointer-events:none; transition:opacity .35s ease;
+    overflow:hidden;
+}
+.page9-celebration.show { opacity:1; pointer-events:auto; }
+.page9-celebration-content {
+    position:relative; z-index:3; text-align:center; padding:20px;
+    animation:page9CelebrationIn .7s cubic-bezier(.22,1,.36,1);
+}
+@keyframes page9CelebrationIn {
+    0% { opacity:0; transform:scale(.55) rotate(-7deg); }
+    70% { transform:scale(1.08) rotate(2deg); }
+    100% { opacity:1; transform:scale(1) rotate(0); }
+}
+.page9-big-heart {
+    font-size:clamp(70px,22vw,130px); line-height:1;
+    animation:page9HeartBeat 1s ease-in-out infinite;
+}
+@keyframes page9HeartBeat {
+    0%,100% { transform:scale(1); }
+    50% { transform:scale(1.16); }
+}
+.page9-celebration-title {
+    margin-top:18px; color:#5b1e31;
+    font-family:"Noto Sans Oriya","Noto Sans Odia",sans-serif;
+    font-size:clamp(30px,9vw,52px); line-height:1.2; font-weight:800;
+}
+.page9-celebration-subtitle {
+    margin-top:9px; color:#5b1e31; opacity:.7;
+    font-family:"Noto Sans Oriya","Noto Sans Odia",sans-serif;
+    font-size:clamp(14px,4vw,18px);
+}
+.page9-music-btn {
+    margin-top:26px;
+    padding:14px 26px;
+    border:0;
+    border-radius:999px;
+    font-family:"Noto Sans Oriya","Noto Sans Odia",sans-serif;
+    font-size:clamp(15px,4.2vw,18px);
+    font-weight:700;
+    color:#fff;
+    background:linear-gradient(135deg,#ff6f9c,#ff4d7e 55%,#c81e5a);
+    box-shadow:0 12px 30px rgba(200,30,90,.38);
+    cursor:pointer;
+    animation:page9MusicIn .6s .5s both cubic-bezier(.22,1,.36,1);
+    transition:transform .18s ease, box-shadow .2s ease;
+    -webkit-tap-highlight-color:transparent;
+}
+.page9-music-btn:active { transform:scale(.95); }
+@keyframes page9MusicIn {
+    from { opacity:0; transform:translateY(14px) scale(.9); }
+    to   { opacity:1; transform:translateY(0) scale(1); }
+}
+.page9-floating-heart {
+    position:absolute; bottom:-50px; left:var(--left); z-index:1;
+    font-size:var(--size); opacity:0;
+    animation:page9FloatHeart var(--duration) ease-in forwards;
+    animation-delay:var(--delay);
+}
+@keyframes page9FloatHeart {
+    0% { opacity:0; transform:translateY(0) rotate(0) scale(.5); }
+    12% { opacity:1; }
+    100% {
+        opacity:0;
+        transform:translateY(calc(-100svh - 100px)) rotate(var(--rotation)) scale(1.1);
+    }
+}
+.page9-confetti {
+    position:absolute; top:-30px; left:var(--left);
+    width:var(--width); height:var(--height);
+    background:rgba(91,30,49,.75); opacity:0;
+    transform:rotate(var(--rotation));
+    animation:page9Confetti var(--duration) linear forwards;
+    animation-delay:var(--delay);
+}
+@keyframes page9Confetti {
+    0% { opacity:0; transform:translateY(0) rotate(0); }
+    10% { opacity:1; }
+    100% { opacity:.85; transform:translateY(110svh) rotate(720deg); }
+}
+.page9-end {
+    position:fixed; inset:0; z-index:100000;
+    display:flex; align-items:center; justify-content:center;
+    padding:24px; background:rgba(255,248,245,.98);
+    opacity:0; pointer-events:none; transition:opacity .5s ease;
+}
+.page9-end.show { opacity:1; }
+.page9-end-content {
+    max-width:390px; text-align:center;
+    animation:page9EndIn .65s cubic-bezier(.22,1,.36,1);
+}
+@keyframes page9EndIn {
+    from { opacity:0; transform:translateY(20px) scale(.95); }
+    to { opacity:1; transform:translateY(0) scale(1); }
+}
+.page9-end-title {
+    color:#5b1e31; font-size:clamp(28px,8vw,42px);
+    line-height:1.3; font-weight:750;
+}
+.page9-end-subtitle {
+    margin-top:12px; color:#5b1e31; opacity:.58;
+    font-size:14px; line-height:1.6;
+}
+</style>
+
+</head>
+<body>
+
+<main class="page question-page" id="page9">
+
+<header class="top-brand">
+    <div class="top-logo" id="page9Logo">
+        <span class="top-logo-heart">♡</span>
+        FOR YOU
+    </div>
+    <div class="progress" id="page9Progress">09 / ?</div>
+</header>
+
+<section class="question-content">
+
+    <div class="question-intro">
+        <div class="question-intro-small">Seriously କହୁଛି… 😏</div>
+        <h1 class="question-intro-title">ମୁଁ ତୁମକୁ Like କରେ… ❤️</h1>
+    </div>
+
+    <div class="question-card" id="page9Card">
+
+        <div class="question-card-heart">♡</div>
+
+        <div class="page9-step active" id="page9Step1">
+
+            <div class="page9-number"></div>
+
+            <h2 class="question-text">
+                Do u like me? ❤️
+            </h2>
+
+            <div class="options">
+
+                <button type="button" class="option page9-option" data-answer="yes">
+                    <span class="option-icon">♡</span>
+                    ହଁ ❤️
+                </button>
+
+                <button type="button" class="option page9-option" data-answer="no">
+                    <span class="option-icon">♡</span>
+                    ନାହିଁ
+                </button>
+
+                <button type="button" class="option page9-option" data-answer="who">
+                    <span class="option-icon">♡</span>
+                    ତମେ କିଏ କି? 😏
+                </button>
+
+            </div>
+
+            <div class="question-hint">
+                ସତ କହିବାକୁ ପଡ଼ିବ… 🤭
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+</main>
+
+<div class="page9-popup" id="page9Popup">
+    <div class="page9-popup-text" id="page9PopupText"></div>
+</div>
+
+<div class="page9-celebration" id="page9Celebration">
+    <div id="page9CelebrationParticles"></div>
+    <div class="page9-celebration-content">
+        <div class="page9-big-heart">❤️</div>
+        <div class="page9-celebration-title">YAYYYYY! 🥹❤️</div>
+        <div class="page9-celebration-subtitle">
+            ତାହେଲେ story ଏଠୁ ଆରମ୍ଭ… ✨
+        </div>
+        <button type="button" class="page9-music-btn" id="page9MusicBtn">
+            🎵 MUSIC
+        </button>
+    </div>
+</div>
+
+<div class="page9-end" id="page9End">
+    <div class="page9-end-content">
+        <div class="page9-end-title">Best luck for ur future ❤️</div>
+        <div class="page9-end-subtitle">
+            ଯାହା ହେଉ… honest answer ପାଇଁ thank you. 🙂
+        </div>
+    </div>
+</div>
+
+<audio id="page9YesAudio" preload="auto" playsinline>
+    <source src="assets/audio/page9-yes.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="page9WhoAudio" preload="auto" playsinline>
+    <source src="assets/audio/page9-who.mp3" type="audio/mpeg">
+</audio>
+
+<script src="./js/spa-nav.js"></script>
+
+<script>
+/* =========================================================
+   PAGE 9 FUNCTIONALITY
+   ========================================================= */
+
+let page9Busy = false;
+let page9Navigating = false;
+let page9FirstLoad = true;
+let page9PopupTimer = null;
+
+const page9Options = document.querySelectorAll(".page9-option");
+const page9Popup = document.getElementById("page9Popup");
+const page9PopupText = document.getElementById("page9PopupText");
+const page9Celebration = document.getElementById("page9Celebration");
+const page9CelebrationParticles = document.getElementById("page9CelebrationParticles");
+const page9End = document.getElementById("page9End");
+const page9YesAudio = document.getElementById("page9YesAudio");
+const page9WhoAudio = document.getElementById("page9WhoAudio");
+
+function stopPage9Audio() {
+    [page9YesAudio, page9WhoAudio].forEach(audio => {
+        if (!audio) return;
+        try {
+            audio.pause();
+            audio.currentTime = 0;
+        } catch (error) {
+            console.warn(error);
+        }
+    });
+}
+
+function playYesAudioTwice() {
+    if (!page9YesAudio) return;
+
+    stopPage9Audio();
+
+    try {
+        page9YesAudio.currentTime = 0;
+        const first = page9YesAudio.play();
+        if (first && typeof first.catch === "function") {
+            first.catch(error => console.warn("Page 9 yes audio blocked:", error));
+        }
+    } catch (error) {
+        console.warn(error);
+    }
+
+    setTimeout(() => {
+        if (page9Navigating) return;
+
+        try {
+            page9YesAudio.currentTime = 0;
+            const second = page9YesAudio.play();
+            if (second && typeof second.catch === "function") {
+                second.catch(error => console.warn("Page 9 second yes audio blocked:", error));
+            }
+        } catch (error) {
+            console.warn(error);
+        }
+    }, 180);
+}
+
+function playWhoAudio() {
+    if (!page9WhoAudio) return;
+
+    stopPage9Audio();
+
+    try {
+        page9WhoAudio.currentTime = 0;
+        const promise = page9WhoAudio.play();
+        if (promise && typeof promise.catch === "function") {
+            promise.catch(error => console.warn("Page 9 who audio blocked:", error));
+        }
+    } catch (error) {
+        console.warn(error);
+    }
+}
+
+function showPage9Popup(text, duration) {
+    clearTimeout(page9PopupTimer);
+    page9PopupText.textContent = text;
+    page9Popup.classList.add("show");
+
+    page9PopupTimer = setTimeout(() => {
+        page9Popup.classList.remove("show");
+    }, duration);
+}
+
+function page9Ripple(event, button) {
+    const rect = button.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    button.style.setProperty("--tap-x", x + "px");
+    button.style.setProperty("--tap-y", y + "px");
+    button.classList.remove("ripple");
+    void button.offsetWidth;
+    button.classList.add("ripple");
+
+    setTimeout(() => button.classList.remove("ripple"), 600);
+}
+
+function createFloatingHearts() {
+    for (let i = 0; i < 34; i++) {
+        const heart = document.createElement("div");
+        heart.className = "page9-floating-heart";
+        heart.textContent = Math.random() > .25 ? "❤️" : "♡";
+
+        heart.style.setProperty("--left", (Math.random() * 100) + "%");
+        heart.style.setProperty("--size", (15 + Math.random() * 32) + "px");
+        heart.style.setProperty("--duration", (3 + Math.random() * 3) + "s");
+        heart.style.setProperty("--delay", (Math.random() * 1.8) + "s");
+        heart.style.setProperty("--rotation", (-35 + Math.random() * 70) + "deg");
+
+        page9CelebrationParticles.appendChild(heart);
+        setTimeout(() => heart.remove(), 7000);
+    }
+}
+
+function createConfetti() {
+    for (let i = 0; i < 70; i++) {
+        const piece = document.createElement("div");
+        piece.className = "page9-confetti";
+
+        piece.style.setProperty("--left", (Math.random() * 100) + "%");
+        piece.style.setProperty("--width", (3 + Math.random() * 5) + "px");
+        piece.style.setProperty("--height", (8 + Math.random() * 12) + "px");
+        piece.style.setProperty("--rotation", (Math.random() * 360) + "deg");
+        piece.style.setProperty("--duration", (2.5 + Math.random() * 3) + "s");
+        piece.style.setProperty("--delay", (Math.random() * 1.5) + "s");
+
+        page9CelebrationParticles.appendChild(piece);
+        setTimeout(() => piece.remove(), 6500);
+    }
+}
+
+function startCelebration() {
+    /*
+     * Page 9 is the final page. The celebration is the happy ending —
+     * it stays on screen and does not navigate anywhere.
+     */
+    page9Navigating = true;
+    page9Celebration.classList.add("show");
+    createFloatingHearts();
+    createConfetti();
+    playYesAudioTwice();
+}
+
+function endApplication() {
+    if (page9Navigating) return;
+
+    page9Navigating = true;
+    stopPage9Audio();
+    page9End.classList.add("show");
+
+    setTimeout(() => {
+        spaNav(1, "./index.html");
+    }, 3200);
+}
+
+function handleYes(button) {
+    if (page9Busy || page9Navigating) return;
+
+    page9Busy = true;
+    button.classList.add("selected");
+
+    page9Options.forEach(option => {
+        option.disabled = true;
+    });
+
+    startCelebration();
+}
+
+function handleNo(button) {
+    if (page9Busy || page9Navigating) return;
+
+    page9Busy = true;
+    button.classList.add("selected");
+
+    page9Options.forEach(option => {
+        option.disabled = true;
+    });
+
+    showPage9Popup("Best luck for ur future ❤️", 2500);
+
+    setTimeout(() => {
+        endApplication();
+    }, 2700);
+}
+
+function handleWho(button) {
+    if (page9Busy || page9Navigating) return;
+
+    page9Busy = true;
+    button.classList.add("selected");
+
+    page9Options.forEach(option => {
+        option.disabled = true;
+    });
+
+    playWhoAudio();
+
+    showPage9Popup("ତମ ଘ.. ଥାଉ କହିବିନି 😏", 2300);
+
+    /*
+     * "Who?" is a playful deflection, not a final answer. After the popup,
+     * re-enable the options so the question can be answered again — never
+     * a dead end.
+     */
+    setTimeout(() => {
+        if (page9Navigating) return;
+
+        page9Busy = false;
+
+        page9Options.forEach(option => {
+            option.disabled = false;
+            option.classList.remove("selected", "ripple");
+        });
+    }, 2600);
+}
+
+page9Options.forEach(button => {
+    button.addEventListener("click", event => {
+        page9Ripple(event, button);
+
+        const answer = button.dataset.answer;
+
+        if (answer === "yes") handleYes(button);
+        else if (answer === "no") handleNo(button);
+        else if (answer === "who") handleWho(button);
+    });
+});
+
+const page9MusicBtn = document.getElementById("page9MusicBtn");
+if (page9MusicBtn) {
+    page9MusicBtn.addEventListener("click", function () {
+        stopPage9Audio();
+        spaNav(10, "./page10.html");
+    });
+}
+
+function resetPage9() {
+    page9Busy = false;
+    page9Navigating = false;
+
+    clearTimeout(page9PopupTimer);
+
+    page9Popup.classList.remove("show");
+    page9Celebration.classList.remove("show");
+    page9End.classList.remove("show");
+
+    stopPage9Audio();
+
+    page9Options.forEach(button => {
+        button.disabled = false;
+        button.classList.remove("selected", "ripple");
+    });
+
+    page9CelebrationParticles.innerHTML = "";
+}
+
+window.addEventListener("pageshow", event => {
+    if (page9FirstLoad) {
+        page9FirstLoad = false;
+        return;
+    }
+
+    resetPage9();
+});
+
+window.addEventListener("pagehide", () => {
+    stopPage9Audio();
+});
+
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stopPage9Audio();
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+    resetPage9();
+});
+</script>
+
+</body>
+</html>

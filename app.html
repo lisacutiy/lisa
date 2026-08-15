@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="or">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width,
+        initial-scale=1.0,
+        maximum-scale=1.0,
+        user-scalable=no,
+        viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#420016"
+        id="themeColor"
+    >
+
+    <title>For You ♡</title>
+
+    <style>
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: #fff5f0;
+            overflow: hidden;
+            /* Prevent the shell itself from scrolling/bouncing on mobile. */
+            overscroll-behavior: none;
+        }
+
+        #app {
+            position: fixed;
+            inset: 0;
+            background: #fff5f0;
+        }
+
+        /*
+         * Two stacked frames crossfade between screens.
+         * The outgoing screen stays visible until the incoming one
+         * has fully loaded, so there is never a white flash.
+         */
+        .frame {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            margin: 0;
+            display: block;
+            background: transparent;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .32s ease;
+        }
+
+        .frame.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /*
+         * Lightweight first-paint loader so the very first screen
+         * load never shows a blank page.
+         */
+        #boot {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #420016;
+            color: #ffd0dc;
+            font-family: "Cormorant Garamond", Georgia, serif;
+            font-size: 42px;
+            z-index: 5;
+            transition: opacity .5s ease;
+        }
+
+        #boot.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #boot .beat {
+            animation: bootBeat 1s ease-in-out infinite;
+        }
+
+        @keyframes bootBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.18); }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div id="app"></div>
+
+    <div id="boot"><span class="beat">♡</span></div>
+
+    <script>
+    (function (window, document) {
+        "use strict";
+
+        /* =====================================================
+           SCREEN MAP
+           Screen 1 is the hero (index.html). 2-9 are the pages.
+        ====================================================== */
+
+        var PAGES = {
+            1: "page1.html",
+            2: "page2.html",
+            3: "page3.html",
+            4: "page4.html",
+            5: "page5.html",
+            6: "page6.html",
+            7: "page7.html",
+            8: "page8.html",
+            9: "page9.html",
+            10: "page10.html"
+        };
+
+        /* Match each original page's theme-color for the address bar. */
+        var THEME = {
+            1: "#420016",
+            2: "#fff5f0",
+            3: "#fff5f0",
+            4: "#fff5f0",
+            5: "#fff8f5",
+            6: "#fff8f5",
+            7: "#fff5f0",
+            8: "#fff5f0",
+            9: "#fff5f0",
+            10: "#08283a"
+        };
+
+        var app = document.getElementById("app");
+        var themeEl = document.getElementById("themeColor");
+        var boot = document.getElementById("boot");
+
+        var current = 0;
+        var busy = false;
+
+        /* =====================================================
+           TWO PING-PONG FRAMES
+        ====================================================== */
+
+        function makeFrame() {
+            var f = document.createElement("iframe");
+            f.className = "frame";
+            f.setAttribute("allow", "autoplay");
+            f.setAttribute("scrolling", "no");
+            app.appendChild(f);
+            return f;
+        }
+
+        var activeFrame = makeFrame();
+        var idleFrame = makeFrame();
+
+        function stopFrameMedia(frame) {
+            /*
+             * The frame we are leaving may still be playing audio or
+             * running timers. Blanking it fully unloads that document,
+             * which stops everything cleanly.
+             */
+            try {
+                /* replace() unloads the doc WITHOUT adding a history entry. */
+                frame.contentWindow.location.replace("about:blank");
+            } catch (error) {
+                try { frame.src = "about:blank"; } catch (e) { /* ignore */ }
+            }
+            frame.classList.remove("active");
+        }
+
+        /* =====================================================
+           NAVIGATE (with crossfade)
+        ====================================================== */
+
+        function navigate(n, onDone) {
+            if (!PAGES[n]) { return; }
+
+            busy = true;
+
+            var incoming = idleFrame;
+            var outgoing = activeFrame;
+
+            function reveal() {
+                incoming.removeEventListener("load", reveal);
+
+                incoming.classList.add("active");
+                outgoing.classList.remove("active");
+
+                /* Update address-bar colour to match the screen. */
+                if (THEME[n]) {
+                    themeEl.setAttribute("content", THEME[n]);
+                }
+
+                /* Swap roles for the next navigation. */
+                activeFrame = incoming;
+                idleFrame = outgoing;
+                current = n;
+
+                /* Hide the boot splash on the first successful load. */
+                if (!boot.classList.contains("hidden")) {
+                    boot.classList.add("hidden");
+                    window.setTimeout(function () {
+                        if (boot.parentNode) { boot.parentNode.removeChild(boot); }
+                    }, 600);
+                }
+
+                /* After the crossfade, unload the old screen's media. */
+                window.setTimeout(function () {
+                    stopFrameMedia(idleFrame);
+                    busy = false;
+                    if (typeof onDone === "function") { onDone(); }
+                }, 340);
+            }
+
+            incoming.addEventListener("load", reveal);
+
+            /*
+             * Load with location.replace() rather than setting .src so the
+             * iframe navigation does NOT push a browser history entry. Only
+             * the router's pushState controls Back/Forward — otherwise the
+             * device Back button would rewind iframe loads instead of screens.
+             */
+            try {
+                incoming.contentWindow.location.replace(PAGES[n]);
+            } catch (error) {
+                incoming.src = PAGES[n];
+            }
+        }
+
+        /* =====================================================
+           PUBLIC ROUTER
+        ====================================================== */
+
+        var SPA = {
+            /* Forward navigation from within a page — adds history. */
+            go: function (n) {
+                if (n === current || busy) { return; }
+                window.history.pushState({ screen: n }, "", "#s" + n);
+                navigate(n);
+            },
+
+            /* Internal navigation without touching history (Back/Forward). */
+            show: function (n) {
+                if (n === current) { return; }
+                navigate(n);
+            },
+
+            current: function () { return current; }
+        };
+
+        window.SPA = SPA;
+
+        /* =====================================================
+           BROWSER / DEVICE BACK BUTTON
+        ====================================================== */
+
+        window.addEventListener("popstate", function (event) {
+            var n = (event.state && event.state.screen)
+                ? event.state.screen
+                : 1;
+            SPA.show(n);
+        });
+
+        /* =====================================================
+           START AT SCREEN 1
+        ====================================================== */
+
+        window.history.replaceState({ screen: 1 }, "", "#s1");
+        navigate(1);
+
+    })(window, document);
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+
+<html lang="or">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width,
+        initial-scale=1.0,
+        maximum-scale=1.0,
+        user-scalable=no,
+        viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#fff5f0"
+    >
+
+    <title>Hi lisa… ♡</title>
+
+
+    <!-- =====================================================
+         SHARED CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="./css/style.css"
+    >
+
+
+    <!-- =====================================================
+         PAGE 4 ONLY CSS
+    ====================================================== -->
+
+    <style>
+
+        /* =================================================
+           PAGE 4 QUESTION STEPS
+        ================================================== */
+
+        .question-step {
+
+            display: none;
+
+            width: 100%;
+
+            animation:
+                questionStepIn
+                .42s
+                cubic-bezier(
+                    .22,
+                    .61,
+                    .36,
+                    1
+                );
+
+        }
+
+
+        .question-step.active {
+
+            display: block;
+
+        }
+
+
+        @keyframes questionStepIn {
+
+            0% {
+
+                opacity: 0;
+
+                transform:
+                    translateY(12px)
+                    scale(.985);
+
+            }
+
+            100% {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+
+            }
+
+        }
+
+
+        /* =================================================
+           SPECIAL CHOCOLATE REACTION
+        ================================================== */
+
+        .chocolate-reaction {
+
+            position: fixed;
+
+            left: 50%;
+
+            top: 50%;
+
+            transform:
+                translate(-50%, -50%)
+                scale(.75);
+
+            opacity: 0;
+
+            z-index: 9999;
+
+            padding:
+                18px 26px;
+
+            border-radius:
+                20px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .92
+                );
+
+            box-shadow:
+                0 18px 50px
+                rgba(
+                    91,
+                    30,
+                    49,
+                    .18
+                );
+
+            color:
+                #5b1e31;
+
+            font-family:
+                "Noto Sans Oriya",
+                "Noto Sans Odia",
+                sans-serif;
+
+            font-size:
+                clamp(
+                    22px,
+                    6vw,
+                    30px
+                );
+
+            font-weight:
+                700;
+
+            white-space:
+                nowrap;
+
+            pointer-events:
+                none;
+
+            transition:
+                opacity .35s ease,
+                transform .45s
+                cubic-bezier(
+                    .22,
+                    1,
+                    .36,
+                    1
+                );
+
+        }
+
+
+        .chocolate-reaction.show {
+
+            opacity: 1;
+
+            transform:
+                translate(-50%, -50%)
+                scale(1);
+
+        }
+
+
+        /* =================================================
+           SMALL MOBILE SAFETY
+        ================================================== */
+
+        @media (max-width: 480px) {
+
+            .chocolate-reaction {
+
+                max-width:
+                    calc(100vw - 40px);
+
+                padding:
+                    16px 20px;
+
+                font-size:
+                    24px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     PAGE
+========================================================== -->
+
+<main
+    class="page question-page"
+>
+
+
+    <!-- =====================================================
+         TOP BRAND
+    ====================================================== -->
+
+    <header class="top-brand">
+
+        <div class="top-logo">
+
+            <span class="top-logo-heart">
+                ♡
+            </span>
+
+            FOR YOU
+
+        </div>
+
+
+        <div class="progress">
+            04 / ?
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         QUESTION CONTENT
+    ====================================================== -->
+
+    <section class="question-content">
+
+
+        <div class="question-intro">
+
+            <div class="question-intro-small">
+
+                ଆଉ ଗୋଟିଏ ପ୍ରଶ୍ନ… 👀
+
+            </div>
+
+
+            <h1 class="question-intro-title">
+
+                ତମ ପସନ୍ଦ ଜାଣିବା ପାଇଁ ❤️
+
+            </h1>
+
+        </div>
+
+
+
+        <!-- =================================================
+             MAIN QUESTION CARD
+        ================================================== -->
+
+        <div
+            class="question-card"
+            id="questionCard"
+        >
+
+
+            <!-- =================================================
+                 CARD HEART
+            ================================================== -->
+
+            <div class="question-card-heart">
+
+                ♡
+
+            </div>
+
+
+
+            <!-- =================================================
+                 STEP 1
+                 MAIN FOOD QUESTION
+            ================================================== -->
+
+            <div
+                id="foodQuestion"
+                class="question-step active"
+            >
+
+
+                <h2 class="question-text">
+
+                    କଣ ଖାଇବାକୁ<br>
+                    ଭଲ ଲାଗେ?
+
+                </h2>
+
+
+
+                <div class="options">
+
+
+                    <!-- =====================================
+                         CHOCOLATE
+                    ====================================== -->
+
+                    <button
+                        class="option"
+                        data-food="chocolate"
+                        type="button"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        Chocolate
+
+                    </button>
+
+
+
+                    <!-- =====================================
+                         FAST FOOD
+                    ====================================== -->
+
+                    <button
+                        class="option"
+                        data-food="fast-food"
+                        type="button"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        Fast Food
+
+                    </button>
+
+
+
+                    <!-- =====================================
+                         CHICKEN / MUTTON
+                    ====================================== -->
+
+                    <button
+                        class="option"
+                        data-food="chicken-mutton"
+                        type="button"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        Chicken / Mutton
+
+                    </button>
+
+
+
+                    <!-- =====================================
+                         HOME FOOD
+                    ====================================== -->
+
+                    <button
+                        class="option"
+                        data-food="home-food"
+                        type="button"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        ଘର ଖାଇବା
+
+                    </button>
+
+
+                </div>
+
+
+
+                <div class="question-hint">
+
+                    ବିନ୍ଦାସ କୁହ 😎❤️
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 STEP 2
+                 CHOCOLATE QUESTION
+            ================================================== -->
+
+            <div
+                id="chocolateQuestion"
+                class="question-step"
+            >
+
+
+                <h2 class="question-text">
+
+                    କଉ Chocolate<br>
+                     ଭଲ ଲାଗେ? 🍫
+
+                </h2>
+
+
+
+                <div class="options">
+
+
+                    <!-- =====================================
+                         DAIRY MILK
+                    ====================================== -->
+
+                    <button
+                        class="option"
+                        data-chocolate="dairy-milk"
+                        type="button"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        Dairy Milk
+
+                    </button>
+
+
+
+                    <!-- =====================================
+                         FERRERO ROCHER
+                    ====================================== -->
+
+                    <button
+                        class="option"
+                        data-chocolate="ferrero-rocher"
+                        type="button"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        Ferrero Rocher
+
+                    </button>
+
+
+
+                    <!-- =====================================
+                         LINDT LINDOR
+                    ====================================== -->
+
+                    <button
+                        class="option"
+                        data-chocolate="lindt-lindor"
+                        type="button"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        Lindt Lindor balls
+
+                    </button>
+
+
+
+                    <!-- =====================================
+                         KITKAT
+                    ====================================== -->
+
+                    <button
+                        class="option"
+                        data-chocolate="kitkat"
+                        type="button"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        KitKat
+
+                    </button>
+
+
+
+                    <!-- =====================================
+                         ALL
+                    ====================================== -->
+
+                    <button
+                        class="option"
+                        data-chocolate="all"
+                        type="button"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        ସବୁ ଭଲ ଲାଗେ 😋🍫
+
+                    </button>
+
+
+                </div>
+
+
+
+                <div class="question-hint">
+
+                    କହିଲେ ନେଇକି ଯିବି 😋❤️
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 STEP 3
+                 FAST FOOD QUESTION
+            ================================================== -->
+
+            <div
+                id="fastFoodQuestion"
+                class="question-step"
+            >
+
+
+                <h2 class="question-text">
+
+                    କଉ Fast Food<br>
+                    ଭଲ ଲାଗେ? 😋
+
+                </h2>
+
+
+
+                <div class="options">
+
+
+                    <!-- =====================================
+                         GUPCHUP
+                    ====================================== -->
+
+                    <button
+                        class="option"
+                        data-fastfood="gupchup"
+                        type="button"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        ଗୁପଚୁପ
+
+                    </button>
+
+
+
+                    <!-- =====================================
+                         CHAAT
+                    ====================================== -->
+
+                    <button
+                        class="option"
+                        data-fastfood="chaat"
+                        type="button"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        CHAAT
+
+                    </button>
+
+
+
+                    <!-- =====================================
+                         ROLL
+                    ====================================== -->
+
+                    <button
+                        class="option"
+                        data-fastfood="roll"
+                        type="button"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        EGG ROLL
+
+                    </button>
+
+
+
+                    <!-- =====================================
+                         CHOWMIN
+                    ====================================== -->
+
+                    <button
+                        class="option"
+                        data-fastfood="chowmin"
+                        type="button"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        CHOWMEIN
+
+                    </button>
+
+
+
+                    <!-- =====================================
+                         MOMOS
+                    ====================================== -->
+
+                    <button
+                        class="option"
+                        data-fastfood="momos"
+                        type="button"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        MOMOS
+
+                    </button>
+
+
+
+                    <!-- =====================================
+                         PIZZA
+                    ====================================== -->
+
+                    <button
+                        class="option"
+                        data-fastfood="pizza"
+                        type="button"
+                    >
+
+                        <span class="option-icon">
+                            ♡
+                        </span>
+
+                        PIZZA
+
+                    </button>
+
+
+                </div>
+
+
+
+                <div class="question-hint">
+
+                    କୁହ ଯେ ନେଇଦେବି ❤️
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     AUDIO HINT
+========================================================== -->
+
+<div
+    id="audioHint"
+    class="audio-hint"
+></div>
+
+
+
+<!-- =========================================================
+     SHARED QUESTION AUDIO
+========================================================== -->
+
+<audio
+    id="idleAudio"
+    preload="auto"
+    playsinline
+>
+
+    <source
+        src="assets/audio/idle-question.mp3"
+        type="audio/mpeg"
+    >
+
+</audio>
+
+
+
+<!-- =========================================================
+     SHARED MEDIA
+========================================================== -->
+
+<script src="./js/spa-nav.js"></script>
+<script src="./js/media.js"></script>
+
+
+
+<script>
+
+/* =========================================================
+   PAGE 4 STATE
+========================================================= */
+
+let navigating = false;
+
+let page4FirstLoad = true;
+
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const foodQuestion =
+    document.getElementById(
+        "foodQuestion"
+    );
+
+
+const chocolateQuestion =
+    document.getElementById(
+        "chocolateQuestion"
+    );
+
+
+const fastFoodQuestion =
+    document.getElementById(
+        "fastFoodQuestion"
+    );
+
+
+const foodOptions =
+    foodQuestion.querySelectorAll(
+        ".option"
+    );
+
+
+const chocolateOptions =
+    chocolateQuestion.querySelectorAll(
+        ".option"
+    );
+
+
+const fastFoodOptions =
+    fastFoodQuestion.querySelectorAll(
+        ".option"
+    );
+
+
+
+/* =========================================================
+   MEDIA
+========================================================= */
+
+MediaManager.init({
+
+    idleTime:
+        7000,
+
+    audio:
+        "assets/audio/idle-question.mp3",
+
+    hint:
+        "ତୁମେ ଏତେ ଭାବୁଛ କାହିଁକି? 😌",
+
+    playOnce:
+        true
+
+});
+
+
+
+/* =========================================================
+   SHOW CHOCOLATE QUESTION
+========================================================= */
+
+function showChocolateQuestion() {
+
+    MediaManager.stop();
+
+
+    foodQuestion.classList.remove(
+        "active"
+    );
+
+
+    fastFoodQuestion.classList.remove(
+        "active"
+    );
+
+
+    chocolateQuestion.classList.add(
+        "active"
+    );
+
+
+    MediaManager.reset();
+
+
+    requestAnimationFrame(
+        () => {
+
+            window.scrollTo(
+                0,
+                0
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   SHOW FAST FOOD QUESTION
+========================================================= */
+
+function showFastFoodQuestion() {
+
+    MediaManager.stop();
+
+
+    foodQuestion.classList.remove(
+        "active"
+    );
+
+
+    chocolateQuestion.classList.remove(
+        "active"
+    );
+
+
+    fastFoodQuestion.classList.add(
+        "active"
+    );
+
+
+    MediaManager.reset();
+
+
+    requestAnimationFrame(
+        () => {
+
+            window.scrollTo(
+                0,
+                0
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   GO TO PAGE 5
+========================================================= */
+
+function goToPage5() {
+
+    if (
+        navigating
+    ) {
+
+        return;
+
+    }
+
+
+    navigating =
+        true;
+
+
+    MediaManager.stop();
+
+
+    setTimeout(
+        () => {
+
+            spaNav(5, "./page5.html");
+
+        },
+        180
+    );
+
+}
+
+
+
+/* =========================================================
+   FOOD OPTIONS
+========================================================= */
+
+foodOptions.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            async () => {
+
+                if (
+                    navigating
+                ) {
+
+                    return;
+
+                }
+
+
+                await MediaManager.unlock();
+
+
+                MediaManager.reset();
+
+
+                const food =
+                    button.dataset.food;
+
+
+
+                /* =========================================
+                   CHOCOLATE
+                ========================================== */
+
+                if (
+                    food ===
+                    "chocolate"
+                ) {
+
+                    button.classList.add(
+                        "selected"
+                    );
+
+
+                    setTimeout(
+                        () => {
+
+                            button.classList.remove(
+                                "selected"
+                            );
+
+
+                            showChocolateQuestion();
+
+                        },
+                        220
+                    );
+
+
+                    return;
+
+                }
+
+
+
+                /* =========================================
+                   FAST FOOD
+                ========================================== */
+
+                if (
+                    food ===
+                    "fast-food"
+                ) {
+
+                    button.classList.add(
+                        "selected"
+                    );
+
+
+                    setTimeout(
+                        () => {
+
+                            button.classList.remove(
+                                "selected"
+                            );
+
+
+                            showFastFoodQuestion();
+
+                        },
+                        220
+                    );
+
+
+                    return;
+
+                }
+
+
+
+                /* =========================================
+                   EVERYTHING ELSE
+                ========================================== */
+
+                goToPage5();
+
+            }
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   SPECIAL CHOCOLATE REACTION
+========================================================= */
+
+function showChocolateReaction() {
+
+    navigating =
+        true;
+
+
+    chocolateOptions.forEach(
+        option => {
+
+            option.disabled =
+                true;
+
+        }
+    );
+
+
+    const reaction =
+        document.createElement(
+            "div"
+        );
+
+
+    reaction.className =
+        "chocolate-reaction";
+
+
+    reaction.textContent =
+        "ଓରେ ବାପ୍ ରେ 😳❤️";
+
+
+    document.body.appendChild(
+        reaction
+    );
+
+
+    requestAnimationFrame(
+        () => {
+
+            reaction.classList.add(
+                "show"
+            );
+
+        }
+    );
+
+
+    setTimeout(
+        () => {
+
+            reaction.classList.remove(
+                "show"
+            );
+
+
+            setTimeout(
+                () => {
+
+                    reaction.remove();
+
+
+                    spaNav(5, "./page5.html");
+
+                },
+                250
+            );
+
+        },
+        1300
+    );
+
+}
+
+
+
+/* =========================================================
+   CHOCOLATE OPTIONS
+========================================================= */
+
+chocolateOptions.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            async () => {
+
+                if (
+                    navigating
+                ) {
+
+                    return;
+
+                }
+
+
+                await MediaManager.unlock();
+
+
+                MediaManager.reset();
+
+
+                const chocolate =
+                    button.dataset.chocolate;
+
+
+
+                /*
+                 * Show selected state.
+                 */
+
+                button.classList.add(
+                    "selected"
+                );
+
+
+
+                /*
+                 * Ferrero Rocher and
+                 * Lindt Lindor balls get
+                 * the special reaction.
+                 */
+
+                if (
+                    chocolate ===
+                        "ferrero-rocher"
+                    ||
+                    chocolate ===
+                        "lindt-lindor"
+                ) {
+
+                    showChocolateReaction();
+
+                    return;
+
+                }
+
+
+
+                /*
+                 * Disable the other
+                 * chocolate options.
+                 */
+
+                chocolateOptions.forEach(
+                    option => {
+
+                        option.disabled =
+                            true;
+
+                    }
+                );
+
+
+                /*
+                 * Continue to Page 5.
+                 */
+
+                goToPage5();
+
+            }
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   FAST FOOD OPTIONS
+========================================================= */
+
+fastFoodOptions.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            async () => {
+
+                if (
+                    navigating
+                ) {
+
+                    return;
+
+                }
+
+
+                await MediaManager.unlock();
+
+
+                MediaManager.reset();
+
+
+                /*
+                 * Show selected state.
+                 */
+
+                button.classList.add(
+                    "selected"
+                );
+
+
+                /*
+                 * Disable the remaining
+                 * options.
+                 */
+
+                fastFoodOptions.forEach(
+                    option => {
+
+                        option.disabled =
+                            true;
+
+                    }
+                );
+
+
+                /*
+                 * Continue to Page 5.
+                 */
+
+                goToPage5();
+
+            }
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   RESET PAGE 4
+========================================================= */
+
+function resetPage4() {
+
+    navigating =
+        false;
+
+
+
+    /* -----------------------------------------
+       Reset food options
+    ----------------------------------------- */
+
+    foodOptions.forEach(
+        option => {
+
+            option.disabled =
+                false;
+
+            option.classList.remove(
+                "selected",
+                "correct",
+                "wrong"
+            );
+
+        }
+    );
+
+
+
+    /* -----------------------------------------
+       Reset chocolate options
+    ----------------------------------------- */
+
+    chocolateOptions.forEach(
+        option => {
+
+            option.disabled =
+                false;
+
+            option.classList.remove(
+                "selected",
+                "correct",
+                "wrong"
+            );
+
+        }
+    );
+
+
+
+    /* -----------------------------------------
+       Reset fast food options
+    ----------------------------------------- */
+
+    fastFoodOptions.forEach(
+        option => {
+
+            option.disabled =
+                false;
+
+            option.classList.remove(
+                "selected",
+                "correct",
+                "wrong"
+            );
+
+        }
+    );
+
+
+
+    /* -----------------------------------------
+       Return to main question
+    ----------------------------------------- */
+
+    chocolateQuestion.classList.remove(
+        "active"
+    );
+
+
+    fastFoodQuestion.classList.remove(
+        "active"
+    );
+
+
+    foodQuestion.classList.add(
+        "active"
+    );
+
+
+
+    /* -----------------------------------------
+       Restart 7-second timer
+    ----------------------------------------- */
+
+    MediaManager.resetForNewQuestion();
+
+}
+
+
+
+/* =========================================================
+   MOBILE BACK / FORWARD
+========================================================= */
+
+window.addEventListener(
+    "pageshow",
+    event => {
+
+        /*
+         * First normal page load.
+         */
+
+        if (
+            page4FirstLoad
+        ) {
+
+            page4FirstLoad =
+                false;
+
+            return;
+
+        }
+
+
+        /*
+         * Returning to Page 4
+         * through mobile Back/Forward.
+         */
+
+        resetPage4();
+
+    }
+);
+
+
+
+/* =========================================================
+   PAGE HIDE
+========================================================= */
+
+window.addEventListener(
+    "pagehide",
+    () => {
+
+        MediaManager.stop();
+
+    }
+);
+
+
+
+/* =========================================================
+   VISIBILITY
+========================================================= */
+
+document.addEventListener(
+    "visibilitychange",
+    () => {
+
+        if (
+            document.visibilityState ===
+            "hidden"
+        ) {
+
+            MediaManager.stop();
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

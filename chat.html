@@ -1,0 +1,342 @@
+
+<!DOCTYPE html>
+
+<html lang="or">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="ମନର କଥା କହନ୍ତୁ"
+    >
+
+    <title>ମନର କଥା | ମୋ ଦୁଃଖ ଶୁଣିବ କିଏ</title>
+
+
+    <!-- Odia Font -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Oriya:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- Chat CSS -->
+
+    <link
+        rel="stylesheet"
+        href="css/chat.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================
+         BACKGROUND
+    ====================================== -->
+
+    <div class="chat-background">
+
+        <div class="chat-orb orb-one"></div>
+
+        <div class="chat-orb orb-two"></div>
+
+        <div class="chat-noise"></div>
+
+    </div>
+
+
+    <!-- =====================================
+         NAVBAR
+    ====================================== -->
+
+    <header class="chat-navbar">
+
+        <a
+            href="index.html"
+            class="back-button"
+        >
+            ←
+            <span>ଫେରିଯାଆନ୍ତୁ</span>
+        </a>
+
+
+        <div class="chat-brand">
+
+            <span class="brand-dot"></span>
+
+            ମନର କଥା
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================
+         MAIN
+    ====================================== -->
+
+    <main class="chat-page">
+
+
+        <!-- =================================
+             HEADER
+        ================================== -->
+
+        <section class="chat-header">
+
+            <span class="chat-eyebrow">
+                A LITTLE SPACE FOR YOU
+            </span>
+
+
+            <h1>
+                କିଛି କହିବେ?
+            </h1>
+
+
+            <p>
+                ମନରେ ଯାହା ଅଛି,
+                ଏଠାରେ ଲେଖିଦିଅନ୍ତୁ।
+                ନାମ ଦେବା ଆବଶ୍ୟକ ନାହିଁ।
+            </p>
+
+        </section>
+
+
+        <!-- =================================
+             MESSAGE FORM
+        ================================== -->
+
+        <section class="message-box">
+
+
+            <form id="messageForm">
+
+
+                <!-- NAME -->
+
+                <div class="field">
+
+                    <label for="name">
+                        ଆପଣଙ୍କ ନାମ
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        maxlength="60"
+                        placeholder="ନାମ ଲେଖନ୍ତୁ... (optional)"
+                    >
+
+                </div>
+
+
+                <!-- MESSAGE -->
+
+                <div class="field">
+
+                    <div class="message-label-row">
+
+                        <label for="message">
+                            ମନର କଥା
+                        </label>
+
+                        <span id="characterCount">
+                            0 / 1000
+                        </span>
+
+                    </div>
+
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        maxlength="1000"
+                        rows="5"
+                        placeholder="ଯାହା କହିବାକୁ ଇଚ୍ଛା ହେଉଛି... ଲେଖିଦିଅନ୍ତୁ"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- ANONYMOUS -->
+
+                <label class="anonymous-option">
+
+                    <input
+                        type="checkbox"
+                        id="anonymous"
+                        checked
+                    >
+
+                    <span class="custom-checkbox"></span>
+
+                    <span>
+                        Anonymous ଭାବରେ ପଠାନ୍ତୁ
+                    </span>
+
+                </label>
+
+
+                <!-- SEND -->
+
+                <button
+                    type="submit"
+                    class="send-button"
+                    id="sendButton"
+                >
+
+                    <span id="sendText">
+                        ପଠାନ୍ତୁ ❤️
+                    </span>
+
+                    <span
+                        class="send-spinner"
+                        id="sendSpinner"
+                    ></span>
+
+                </button>
+
+
+                <!-- STATUS -->
+
+                <div
+                    class="form-status"
+                    id="formStatus"
+                    aria-live="polite"
+                ></div>
+
+
+            </form>
+
+        </section>
+
+
+        <!-- =================================
+             PUBLIC MESSAGES
+        ================================== -->
+
+        <section class="messages-section">
+
+
+            <div class="messages-heading">
+
+                <div>
+
+                    <span>
+                        FROM PEOPLE LIKE YOU
+                    </span>
+
+                    <h2>
+                        ମନର କଥା
+                    </h2>
+
+                </div>
+
+
+                <div
+                    class="live-status"
+                    id="liveStatus"
+                >
+
+                    <span></span>
+
+                    Live
+
+                </div>
+
+            </div>
+
+
+            <!-- MESSAGE LIST -->
+
+            <div
+                class="messages-list"
+                id="messagesList"
+            >
+
+                <div class="loading-message">
+
+                    <div class="loading-spinner"></div>
+
+                    <p>
+                        କିଛି କଥା ଖୋଜୁଛି...
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- EMPTY STATE -->
+
+            <div
+                class="empty-state"
+                id="emptyState"
+                hidden
+            >
+
+                <div class="empty-icon">
+                    ♡
+                </div>
+
+                <h3>
+                    ଏପର୍ଯ୍ୟନ୍ତ କିଛି ନାହିଁ
+                </h3>
+
+                <p>
+                    ପ୍ରଥମ କଥାଟି ଆପଣ ଲେଖିବେ?
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+    <!-- =====================================
+         SUPABASE
+    ====================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/chat.js"></script>
+
+
+</body>
+
+</html>
+

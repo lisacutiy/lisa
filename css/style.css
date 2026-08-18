@@ -16,9 +16,12 @@ body {
     min-height: 100vh;
     background: #09090b;
     color: #ffffff;
-    font-family: "Noto Sans Oriya", sans-serif;
+    font-family: 'Noto Sans Oriya', sans-serif;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "liga" 1, "mizm" 1;
     overflow-x: hidden;
 }
+
 
 button,
 a {
@@ -47,16 +50,12 @@ a {
     overflow: hidden;
 
     background:
-        radial-gradient(
-            circle at 20% 20%,
+        radial-gradient(circle at 20% 20%,
             rgba(109, 40, 217, 0.16),
-            transparent 35%
-        ),
-        radial-gradient(
-            circle at 80% 70%,
+            transparent 35%),
+        radial-gradient(circle at 80% 70%,
             rgba(37, 99, 235, 0.13),
-            transparent 35%
-        ),
+            transparent 35%),
         #09090b;
 }
 
@@ -261,9 +260,7 @@ a {
     align-items: center;
 
     padding:
-        90px
-        8vw
-        85px;
+        90px 8vw 85px;
 }
 
 
@@ -320,11 +317,9 @@ a {
     display: flex;
     flex-direction: column;
 
-    font-size: clamp(
-        4rem,
-        10vw,
-        9rem
-    );
+    font-size: clamp(4rem,
+            10vw,
+            9rem);
 
     line-height: 1.4;
 
@@ -343,12 +338,10 @@ a {
     color: transparent;
 
     background:
-        linear-gradient(
-            100deg,
+        linear-gradient(100deg,
             #c4b5fd,
             #818cf8,
-            #60a5fa
-        );
+            #60a5fa);
 
     background-clip: text;
     -webkit-background-clip: text;
@@ -366,11 +359,9 @@ a {
 
     color: rgba(255, 255, 255, 0.58);
 
-    font-size: clamp(
-        16px,
-        2vw,
-        20px
-    );
+    font-size: clamp(16px,
+            2vw,
+            20px);
 
     line-height: 1.;
 }
@@ -401,11 +392,9 @@ a {
     color: white;
 
     background:
-        linear-gradient(
-            135deg,
+        linear-gradient(135deg,
             #7c3aed,
-            #4f46e5
-        );
+            #4f46e5);
 
     box-shadow:
         0 12px 35px rgba(99, 102, 241, 0.25);
@@ -487,11 +476,9 @@ a {
     width: 1px;
 
     background:
-        linear-gradient(
-            transparent,
+        linear-gradient(transparent,
             rgba(167, 139, 250, 0.7),
-            transparent
-        );
+            transparent);
 }
 
 
@@ -583,11 +570,9 @@ a {
 .about h2 {
     margin-top: 25px;
 
-    font-size: clamp(
-        2.5rem,
-        6vw,
-        6rem
-    );
+    font-size: clamp(2.5rem,
+            6vw,
+            6rem);
 
     line-height: 1;
 
@@ -668,27 +653,22 @@ a {
 .visiting-card-wrapper {
     position: relative;
 
-    width: min(
-        460px,
-        100%
-    );
+    width: min(460px,
+            100%);
 
     z-index: 2;
 
     transform:
-        translateY(30px)
-        scale(0.95);
+        translateY(30px) scale(0.95);
 
     transition:
-        transform 0.4s
-        cubic-bezier(.2,.8,.2,1);
+        transform 0.4s cubic-bezier(.2, .8, .2, 1);
 }
 
 
 .modal.active .visiting-card-wrapper {
     transform:
-        translateY(0)
-        scale(1);
+        translateY(0) scale(1);
 }
 
 
@@ -744,11 +724,9 @@ a {
     border-radius: 28px;
 
     background:
-        linear-gradient(
-            145deg,
+        linear-gradient(145deg,
             rgba(32, 28, 48, 0.98),
-            rgba(13, 13, 18, 0.98)
-        );
+            rgba(13, 13, 18, 0.98));
 
     border: 1px solid rgba(255, 255, 255, 0.12);
 
@@ -799,11 +777,9 @@ a {
     border-radius: 22px;
 
     background:
-        linear-gradient(
-            135deg,
+        linear-gradient(135deg,
             #8b5cf6,
-            #4f46e5
-        );
+            #4f46e5);
 
     box-shadow:
         0 15px 35px rgba(99, 102, 241, 0.3);
@@ -895,11 +871,9 @@ a {
     margin: 30px 0;
 
     background:
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,0.12),
-            transparent
-        );
+        linear-gradient(90deg,
+            rgba(255, 255, 255, 0.12),
+            transparent);
 }
 
 
@@ -1096,9 +1070,7 @@ a {
         min-height: 100svh;
 
         padding:
-            100px
-            22px
-            75px;
+            100px 22px 75px;
     }
 
 
@@ -1118,11 +1090,9 @@ a {
 
     .hero-title {
         font-size:
-            clamp(
-                3.4rem,
+            clamp(3.4rem,
                 17vw,
-                5.5rem
-            );
+                5.5rem);
 
         line-height: 1.02;
     }
@@ -1296,4 +1266,25 @@ a {
         transition-duration: 0.01ms !important;
     }
 
+}
+
+/* ========================================= CHAT BUTTON ========================================= */
+.chat-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 20px;
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 100px;
+    color: rgba(255, 255, 255, .8);
+    background: rgba(255, 255, 255, .045);
+    backdrop-filter: blur(10px);
+    transition: .3s ease;
+}
+
+.chat-button:hover {
+    color: white;
+    background: rgba(255, 255, 255, .09);
+    border-color: rgba(167, 139, 250, .3);
+    transform: translateY(-3px);
 }
